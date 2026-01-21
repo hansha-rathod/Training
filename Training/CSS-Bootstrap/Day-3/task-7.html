@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 7</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .glossy-btn {
+          position: relative;
+          overflow: hidden;
+        }
+      
+        .glossy-btn::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.35),
+            rgba(255, 255, 255, 0)
+          );
+        }
+          .pop-btn {
+            box-shadow:
+            inset 0 -3px 0 rgba(0, 0, 0, 0.25),
+            0 6px 10px rgba(0, 0, 0, 0.15);
+            }
+      </style>
+      
+      
+</head>
+<body class="bg-warning-subtle p-3 p-md-5">
+    <div class="container">
+        <!-- Row 1: Solid Buttons -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button type="button" class="btn btn-primary btn-lg text-uppercase fw-semibold px-4 rounded-0">PRIMARY</button>
+            <button type="button" class="btn btn-success btn-lg text-uppercase fw-semibold px-4 rounded-0">SUCCESS</button>
+            <button type="button" class="btn btn-info btn-lg text-uppercase fw-semibold px-4 rounded-0">INFO</button>
+            <button type="button" class="btn btn-warning btn-lg text-uppercase fw-semibold px-4 rounded-0">WARNING</button>
+            <button type="button" class="btn btn-danger btn-lg text-uppercase fw-semibold px-4 rounded-0">DANGER</button>
+        </div>
+
+        <!-- Row 2: Outline Buttons -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button type="button" class="btn btn-outline-primary btn-lg text-uppercase fw-semibold px-4">PRIMARY</button>
+            <button type="button" class="btn btn-outline-success btn-lg text-uppercase fw-semibold px-4">SUCCESS</button>
+            <button type="button" class="btn btn-outline-info btn-lg text-uppercase fw-semibold px-4">INFO</button>
+            <button type="button" class="btn btn-outline-warning btn-lg text-uppercase fw-semibold px-4">WARNING</button>
+            <button type="button" class="btn btn-outline-danger btn-lg text-uppercase fw-semibold px-4">DANGER</button>
+        </div>
+
+        <!-- Row 3: Solid Buttons with Rounded Corners (Glossy Upper Half) -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button type="button" class="btn btn-primary btn-lg rounded-2 text-uppercase fw-semibold px-4 glossy-btn">PRIMARY</button>
+            <button type="button" class="btn btn-success btn-lg rounded-2 text-uppercase fw-semibold px-4 glossy-btn">SUCCESS</button>
+            <button type="button" class="btn btn-info btn-lg rounded-2 text-uppercase fw-semibold px-4 glossy-btn">INFO</button>
+            <button type="button" class="btn btn-warning btn-lg rounded-2 text-uppercase fw-semibold px-4 glossy-btn">WARNING</button>
+            <button type="button" class="btn btn-danger btn-lg rounded-2 text-uppercase fw-semibold px-4 glossy-btn">DANGER</button>
+        </div>
+        
+        
+
+        <!-- Row 4: Pill Buttons -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button type="button" class="btn btn-primary btn-lg rounded-pill text-uppercase fw-semibold px-4">PRIMARY</button>
+            <button type="button" class="btn btn-success btn-lg rounded-pill text-uppercase fw-semibold px-4">SUCCESS</button>
+            <button type="button" class="btn btn-info btn-lg rounded-pill text-uppercase fw-semibold px-4">INFO</button>
+            <button type="button" class="btn btn-warning btn-lg rounded-pill text-uppercase fw-semibold px-4">WARNING</button>
+            <button type="button" class="btn btn-danger btn-lg rounded-pill text-uppercase fw-semibold px-4">DANGER</button>
+        </div>
+
+        <!-- Row 5: Solid Buttons with Shadow -->
+        <div class="d-flex flex-wrap gap-3 justify-content-center mb-4">
+            <button type="button" class="btn btn-primary btn-lg rounded-2 text-uppercase fw-semibold px-4 pop-btn">PRIMARY</button>
+            <button type="button" class="btn btn-success btn-lg rounded-2 text-uppercase fw-semibold px-4 pop-btn">SUCCESS</button>
+            <button type="button" class="btn btn-info btn-lg rounded-2 text-uppercase fw-semibold px-4 pop-btn">INFO</button>
+            <button type="button" class="btn btn-warning btn-lg rounded-2 text-uppercase fw-semibold px-4 pop-btn">WARNING</button>
+            <button type="button" class="btn btn-danger btn-lg rounded-2 text-uppercase fw-semibold px-4 pop-btn">DANGER</button>
+          </div>
+          
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

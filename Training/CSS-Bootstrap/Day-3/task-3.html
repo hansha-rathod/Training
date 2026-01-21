@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .navbar-custom {
+            background-color: #5a8c7e;
+        }
+        
+        .hero-section {
+            background-color: #7db8a8;
+            min-height: 500px;
+        }
+        
+        .hero-icon {
+            font-size: 80px;
+        }
+        
+        .feature-icon {
+            font-size: 70px;
+            color: #868e96;
+            font-weight: 300;
+        }
+        
+        .code-icon::before {
+            content: '</>';
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .terminal-icon::before {
+            content: '>_';
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        
+        .bolt-icon {
+            transform: rotate(-15deg);
+            display: inline-block;
+        }
+        
+        .image-section {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+        <div class="container-fluid px-5">
+            <a class="navbar-brand fs-4 fw-light" href="#">Amoeba</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">ABOUT</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">PORTFOLIO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#">CONTACT</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section d-flex align-items-center justify-content-center text-white">
+        <div class="container text-center">
+            <div class="hero-icon mb-4">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M35 15 L35 35 L25 65 C20 75 25 85 35 85 L65 85 C75 85 80 75 75 65 L65 35 L65 15 Z" 
+                          stroke="white" stroke-width="3" fill="white" opacity="0.9"/>
+                    <rect x="32" y="10" width="36" height="8" fill="white" opacity="0.9"/>
+                    <circle cx="45" cy="60" r="6" fill="#7db8a8"/>
+                    <circle cx="58" cy="55" r="4" fill="#7db8a8"/>
+                    <circle cx="52" cy="68" r="5" fill="#7db8a8"/>
+                </svg>
+            </div>
+            <h1 class="display-4 fw-normal mb-4">Welcome to Amoeba</h1>
+            <p class="lead px-md-5">
+                Lorem ipsum dolor sit amet, metus graeco voluptua ut, nam mollit perpetua tincidunt
+                platea ad a aspsum lorem at cum erus mauris convallis. Eu mollit ictum adipiscing in
+                lus sed ad musale maecene utique tenias lacusdem magna ut.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5 bg-white">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3 code-icon">
+                        </div>
+                        <h5 class="fw-normal mb-3">Valid HTML5</h5>
+                        <p class="text-muted small">
+                            Lorem ipsum dolor sit amet, metus graeco voluptua ut, 
+                            ad eam singulis patroqeu comprehensam nam no, 
+                            lus eu dicat volutpat velumius.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3 terminal-icon">
+                        </div>
+                        <h5 class="fw-normal mb-3">Responsive</h5>
+                        <p class="text-muted small">
+                            Lorem ipsum dolor sit amet, metus graeco voluptua ut, 
+                            ad eam singulis patroqeu comprehensam nam no, 
+                            lus eu dicat volutpat velumius.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="text-center">
+                        <div class="feature-icon mb-3">
+                            <svg width="70" height="70" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" fill="#868e96" stroke="#868e96" stroke-width="0.5"/>
+                            </svg>
+                        </div>
+
+                        <h5 class="fw-normal mb-3">Customizable</h5>
+                        <p class="text-muted small">
+                            Lorem ipsum dolor sit amet, metus graeco voluptua ut, 
+                            ad eam singulis patroqeu comprehensam nam no, 
+                            lus eu dicat volutpat velumius.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Section with Quote -->
+    <section class="image-section">
+        <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=1200&h=400&fit=crop" 
+             alt="Nature" 
+             class="w-100" 
+             style="height: 400px; object-fit: cover;">
+        <div class="image-overlay">
+            <div class="text-center text-white px-4">
+                <p class="fs-5 mb-3">
+                    Nunc velit risus, dapibus non interdum quis, malesuet nec dolor. Vivamus tempor 
+                    lacinia mauris mollis, diatis nulla jucu sed sagittis tortor volarcu solis sidin 
+                    nec tincidunt metus suscipit etiam velit risus.
+                </p>
+                <p class="small pt-5">— MIKE DOE <span class="text-white-50">www.sitename.com</span></p>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

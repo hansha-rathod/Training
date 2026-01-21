@@ -1,0 +1,458 @@
+/* Updated style.css - Sidebar fixed (does not scroll) */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f9fa;
+    color: #333;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: white;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    z-index: 1000;
+    height: 64px; /* Fixed header height */
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.admin {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #ddd;
+    margin-right: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.container {
+    display: flex;
+    margin-top: 64px; /* Space for fixed header */
+    min-height: calc(100vh - 64px);
+}
+
+.sidebar {
+    position: fixed;
+    top: 64px; /* Start below header */
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 64px);
+    background: white;
+    border-right: 1px solid #e0e0e0;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.03);
+    overflow-y: auto; /* In case of many menu items in future */
+    z-index: 900;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li {
+    padding: 16px 24px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.sidebar li:hover {
+    background: #f0f8ff;
+}
+
+.sidebar li.active {
+    background: #a0d8ef;
+    color: white;
+    font-weight: 600;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+main {
+    margin-left: 200px; /* Space for fixed sidebar */
+    padding: 30px;
+    flex: 1;
+    background: #f8f9fa;
+    min-height: calc(100vh - 64px);
+}
+
+/* Rest of the styles remain the same... */
+
+h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.search {
+    position: relative;
+    flex: 1;
+    max-width: 300px;
+}
+
+.search input {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: white;
+    transition: border 0.2s;
+}
+
+.search input:focus {
+    outline: none;
+    border-color: #a0d8ef;
+    box-shadow: 0 0 0 3px rgba(160, 216, 239, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+    pointer-events: none;
+}
+
+select {
+    padding: 12px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    background: white;
+    font-size: 14px;
+    min-width: 160px;
+}
+
+.add-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.add-btn:hover {
+    background: #218838;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+thead {
+    background: #f1f5f9;
+}
+
+th {
+    padding: 16px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+tr:hover {
+    background: #f8fdff;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+.edit-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 18px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.edit-icon:hover {
+    opacity: 1;
+    color: #007bff;
+}
+
+.delete-icon:hover {
+    opacity: 1;
+    color: #dc3545;
+}
+
+.pagination {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.pagination span {
+    display: inline-block;
+    padding: 10px 14px;
+    margin: 0 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: white;
+    border: 1px solid #ddd;
+    min-width: 40px;
+}
+
+.pagination span:hover {
+    background: #e9ecef;
+}
+
+.pagination span.active {
+    background: #a0d8ef;
+    color: white;
+    border-color: #a0d8ef;
+}
+
+/* Status styles */
+.status-active, .status-paid {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.status-inactive, .status-unpaid {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.status-partially {
+    color: #fd7e14;
+    font-weight: 600;
+}
+
+/* Inline status editing */
+.status-cell {
+    cursor: pointer;
+    position: relative;
+    min-width: 120px;
+}
+
+.status-cell .status-text {
+    display: inline-block;
+}
+
+.status-cell.editing .status-text {
+    display: none;
+}
+
+.status-cell .status-select {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #a0d8ef;
+    border-radius: 6px;
+    background: white;
+    font-size: 14px;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 500px;
+    max-width: 90vw;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    position: relative;
+}
+
+.modal-content h2 {
+    margin: 0 0 20px 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+}
+
+.modal-content label {
+    display: block;
+    margin: 15px 0 5px;
+    font-weight: 500;
+    font-size: 14px;
+    color: #555;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #d0d0d0;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+    outline: none;
+    border-color: #a0d8ef;
+    box-shadow: 0 0 0 3px rgba(160, 216, 239, 0.2);
+}
+
+.modal-content textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.modal-buttons {
+    margin-top: 30px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.cancel-btn {
+    background: #f8f9fa;
+    color: #555;
+    border: 1px solid #ddd;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.save-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.save-btn:hover {
+    background: #218838;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+.close-x {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close-x:hover {
+    color: #666;
+}
+
+/* Report page specific */
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.currency-btn {
+    background: #a0d8ef;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#report-table th {
+    background: #f1f5f9;
+    font-weight: 600;
+}
+
+#report-table td {
+    font-size: 13px;
+}

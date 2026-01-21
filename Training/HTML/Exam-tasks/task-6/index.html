@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Download & Upload</title>
+    </head>
+    <body>
+
+        <a href="sample-file.pdf" download="file-download">Download link</a>
+
+<br><br> <br> <hr> <br>
+
+        <form>
+            <label for="xl">Select Excel file:</label><br>
+            <input type="file" id="excelFile" accept=".xls, .xlsx" required> <br><br>
+            <input type="submit">
+          </form>
+          
+
+          <script>
+            const fileInput = document.getElementById('excelFile');
+
+                fileInput.addEventListener('change', function() {
+                    const filePath = this.value;
+                    const allowedExtensions = /(\.xls|\.xlsx)$/i;
+
+                    if (!allowedExtensions.exec(filePath)) {
+                        alert('Invalid file type. Please upload an Excel file (.xls or .xlsx).');
+                        this.value = '';
+                        return false;
+                    }
+                });
+
+          </script>
+
+    </body>
+</html>

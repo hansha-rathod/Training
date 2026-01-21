@@ -1,0 +1,113 @@
+<!-- invoice.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Logo</div>
+        <div class="admin">
+            <div class="circle"></div>
+            Super Admin
+        </div>
+    </header>
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li><a href="customer.html">Customer</a></li>
+                <li class="active">Invoice</li>
+                <li><a href="report.html">Report</a></li>
+            </ul>
+        </nav>
+        <main>
+            <h1>Invoice</h1>
+            <div class="controls">
+                <div class="search">
+                    <input type="text" placeholder="Search" id="invoice-search">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <select id="payment-filter">
+                    <option>Payment status</option>
+                    <option>Paid</option>
+                    <option>Partially paid</option>
+                    <option>Unpaid</option>
+                </select>
+                <button id="add-invoice-btn" class="add-btn">+ Add Invoice</button>
+            </div>
+            <table id="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Number</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Due date</th>
+                        <th>Payment status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Rows will be added here -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <span>&lt;</span>
+                <span>1</span>
+                <span>2</span>
+                <span>3</span>
+                <span>4</span>
+                <span>5</span>
+                <span>6</span>
+                <span>&gt;</span>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit Invoice Modal -->
+    <div id="invoice-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="invoice-modal-title">Add Invoice</h2>
+            <form id="invoice-form">
+                <label>Number</label>
+                <input type="text" id="number" required>
+                <label>Customer</label>
+                <select id="customer-select" required>
+                    <!-- Options populated from customers -->
+                </select>
+                <label>Date</label>
+                <input type="date" id="date" required>
+                <label>Due date</label>
+                <input type="date" id="due-date" required>
+                <label>QTY</label>
+                <input type="number" id="qty" required>
+                <label>Rate</label>
+                <input type="number" id="rate" required>
+                <label>Description</label>
+                <textarea id="description" required></textarea>
+                <div class="modal-buttons">
+                    <button type="button" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="save-btn">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-x">✖</span>
+            <h2>Are you sure?</h2>
+            <p>Are you sure you want to delete this record?</p>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Cancel</button>
+                <button class="delete-btn">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="JS/script.js"></script>
+</body>
+</html>

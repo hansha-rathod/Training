@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Side Menu HTML</title>
+
+  <!--CSS -->
+  <link rel="stylesheet" href="task-6-style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!--sidebar-->
+  <aside class="sidebar">
+    <h2 class="logo">Zoho Books</h2>
+
+    <ul class="menu">
+      <li>Dashboard</li>
+      <li>Items</li>
+      <li>Banking</li>
+
+      <!-- Dropdown -->
+      <li class="dropdown-btn" onclick="toggleMenu()">
+        Sales       ▾
+      </li>
+      <ul class="dropdown" id="salesMenu">
+        <li>Customers</li>
+        <li>Invoices</li>
+        <li>Payments Received</li>
+        <li>Recurring Invoices</li>
+        <li>Credit Notes</li>
+      </ul>
+
+      <li>Purchases</li>
+      <li>Time Tracking</li>
+      <li>e-Way Bills</li>
+      <li>GST Filing</li>
+    </ul>
+  </aside>
+
+  <!-- form page (main)-->
+  <main class="content">
+
+    <h1>New Customer</h1>
+    <hr>
+
+    <form>
+
+      <!-- Customer type -->
+      <div class="form-row">
+        <label>Customer Type</label>
+        <input type="radio" name="type" checked> Business
+        <input type="radio" name="type"> Individual
+      </div>
+
+      <!-- Primary Contact -->
+      <div class="form-row">
+        <label>Primary Contact</label>
+        <select>
+          <option>Salutation</option>
+          <option>Ms.</option>
+          <option>Mr.</option>
+        </select>
+        <input type="text" placeholder="First Name" autofocus required>
+        <input type="text" placeholder="Last Name">
+      </div>
+
+      <!-- Company name -->
+      <div class="form-row">
+        <label>Company Name</label>
+        <input type="text">
+      </div>
+
+      <!-- Display name -->
+      <div class="form-row" id="customer-display">
+        <label>Customer Display Name *</label>
+        <select required>
+          <option value="Name">Name1</option>
+          <option value="Name2">Name2</option>
+
+        </select>
+      </div>
+
+      <!-- Email -->
+      <div class="form-row">
+        <label>Customer Email</label>
+        <input type="email" required>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-row">
+        <label>Customer Phone</label>
+        <input type="tel" placeholder="Work Phone">
+        <input type="tel" placeholder="Mobile" required>
+      </div>
+
+      <!-- Website -->
+      <div class="form-row">
+        <label>Website</label>
+        <input type="url">
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions">
+        <button type="submit" class="btn-save">Save</button>
+        <button type="reset" class="btn-cancel">Cancel</button>
+      </div>
+
+    </form>
+  </main>
+
+</div>
+
+<!-- JS -->
+<script src="task-6-script.js"></script>
+
+</body>
+</html>

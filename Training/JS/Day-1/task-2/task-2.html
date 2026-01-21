@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task 2 : Multi Step Registration</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>REGISTRATION</h1>
+
+  <!-- STEP 1 -->
+  <section class="step active">
+    <h3>PERSONAL DETAILS</h3>
+
+    <label for="fname">First Name</label>
+    <input id="fname" type="text" required pattern="[A-Za-z ]+">
+
+    <label for="lname">Last Name</label>
+    <input id="lname" type="text" required pattern="[A-Za-z ]+">
+
+    <label for="gender">Gender</label>
+    <select id="gender" required>
+      <option value="">Select</option>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+
+    <label for="zip">Zip Code</label>
+    <input id="zip" type="text" required pattern="\d{6}" maxlength="6">
+
+    <div class="nav">
+      <button class="btn-next" onclick="next()">Next</button>
+    </div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="step">
+    <h3>PROFILE INFORMATION</h3>
+
+    <label>Email</label>
+    <input id="email" type="email" required>
+
+    <label>Username</label>
+    <input id="username" type="text" required>
+
+    <label>Password</label>
+    <input id="password" type="password" required minlength="6">
+
+    <label>Confirm Password</label>
+    <input id="confirm" type="password" required minlength="6">
+
+    <div class="nav">
+      <button class="btn-prev" onclick="prev()">Previous</button>
+      <button class="btn-next" onclick="next()">Next</button>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="step">
+    <h3>BANK INFORMATION</h3>
+
+    <label>Bank Name</label>
+    <select id="bank" required>
+      <option value="">Select</option>
+      <option>Kotak</option>
+      <option>HDFC</option>
+    </select>
+
+    <label>Branch</label>
+    <input id="branch" type="text" required pattern="[A-Za-z ]+">
+
+    <label>Account</label>
+    <select id="bank" required>
+      <option value="">Select</option>
+      <option>Savings</option>
+      <option>Current</option>
+    </select>
+
+    <label>Account Number</label>
+    <input id="account" type="text" required pattern="\d{12}" maxlength="12">
+
+    <div class="nav">
+      <button class="btn-prev" onclick="prev()">Previous</button>
+      <button class="btn-next" onclick="next()">Next</button>
+    </div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="step">
+    <h3>PAYMENT INFORMATION</h3>
+
+    <label>Card Holder Name</label>
+    <input id="cardName" type="text" required pattern="[A-Za-z ]+">
+
+    <label>Card Number</label>
+    <input id="cardNumber" type="text" required pattern="\d{16}" maxlength="16">
+
+    <label>CVV</label>
+    <input id="cvv" type="password" required pattern="\d{3}" maxlength="3">
+
+    <label>Expiry</label>
+    <input id="expiry" type="month" required>
+
+    <div class="nav">
+      <button class="btn-prev" onclick="prev()">Previous</button>
+      <button class="btn-next" onclick="next()">Next</button>
+    </div>
+  </section>
+
+  <!-- STEP 5 -->
+  <section class="step">
+    <h3>USER DETAILS</h3>
+
+    <table class="summary">
+      <tbody id="summary"></tbody>
+    </table>
+
+    <div class="nav">
+      <button class="btn-prev" onclick="prev()">Previous</button>
+      <button class="submit" onclick="save()">Submit</button>
+    </div>
+  </section>
+
+  <!-- DOT INDICATOR -->
+  <div class="steps-indicator" id="stepDots">
+    <span class="active"></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

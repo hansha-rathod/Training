@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+}
+
+.container {
+  width: 800px;
+  margin: 40px auto;
+  background: #e0e0e0;
+  padding: 30px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.step {
+  display: none;
+}
+
+.step.active {
+  display: block;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.nav {
+  margin-top: 20px;
+  text-align: right;
+}
+
+button {
+  padding: 10px 25px;
+  border: none;
+  cursor: pointer;
+}
+
+button.submit {
+  background: #4caf50;
+  color: #fff;
+}
+
+/* Navigation buttons */
+.btn-prev {
+  background: #ffb300;
+  color: #fff;
+}
+
+.btn-next {
+  background: #4caf50; 
+  color: #fff;
+}
+
+.btn-prev:hover {
+  background: #ffa000;
+}
+
+.btn-next:hover {
+  background: #43a047;
+}
+
+
+.steps-indicator {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.steps-indicator span {
+  width: 10px;
+  height: 10px;
+  background: #bdbdbd;
+  border-radius: 50%;
+}
+
+.steps-indicator span.active {
+  background: #4caf50;
+}
+
+.summary {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.summary td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}

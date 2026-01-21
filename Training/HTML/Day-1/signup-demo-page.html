@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<title>Sign-up</title>
+</head>
+
+
+
+
+<body>
+
+<h1>Welcome to Satva Solutions</h1>
+<img src="/Images/accounting-income.webp" onmouseover="bigImg(this)" onmouseout="normalImg(this)" 
+alt="accountings"></img>
+<header>
+<h2>Create an Account</h2>
+</header>
+
+
+<form action="https://satvasolutions.com/" method="get" onsubmit="myFunction()">
+  <fieldset style="width:0px">
+    <legend><strong>Sign-up</strong></legend>
+
+    <!--email-->
+    <label for="email"><b>Email:</b></label><br>
+    <input type="email" id="email" name="email" value="Enter email"> <br>
+
+    <!--username-->
+    <label for="username"><b>Username</b></label><br>
+    <input type="text" id="username" name="username" value="Enter username"><br><br>
+
+    <!--personal details-->
+    <fieldset style="width:0px">
+      <legend><b>Personal Information:</b></legend>
+
+      <!--name-->
+      <label for="name"><b>Name:</b></label><br>
+      <input type="text" id="name" name="name" value="Enter name"> <br>
+
+      <!--role-->
+      <label for="role"><b>Role:</b></label><br>
+      <select name="role" id="role">
+        <option value="developer">Developer</option>
+        <option value="project-coordinator">Project coordinator</option>
+        <option value="quality-analyst">Quality analyst</option>
+      </select>
+    </fieldset>
+    <br>
+
+    <!--password-->
+    <label for="password"><b>Password: </b></label><br>
+    <input type="password" id="password" name="pwd" onchange="pwdChange()"><br>
+    <br>
+    <input type="submit" value="Submit" style="background-color:cadetblue">
+  </fieldset>
+  </form> 
+
+  <!--Script-->
+  <script>
+    function myFunction() {
+      alert("Your Sign-up is completed");
+    }
+    function pwdChange(){
+      alert("Your password is changed!")
+    }
+
+    function bigImg(x) {
+      x.style.height = "400px";
+      x.style.width = "600px";
+    }
+
+    function normalImg(x) {
+      x.style.height = "200px";
+      x.style.width = "500px";
+    }
+  </script>
+    
+
+</body>
+</html>

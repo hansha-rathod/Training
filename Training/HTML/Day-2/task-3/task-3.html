@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Squares</title>
+</head>
+<body>
+
+<canvas id="myCanvas" width="300" height="300"></canvas>
+
+<script>
+  const canvas = document.getElementById("myCanvas");
+  const ctx = canvas.getContext("2d");
+
+  ctx.globalAlpha = 0.7; //70% opaque
+
+  
+  ctx.fillStyle = 	"rgb(255, 153, 153)" ; //pink
+  ctx.fillRect(50, 50, 200, 150);
+
+  
+  ctx.fillStyle = "	#85e085"; //green
+  ctx.fillRect(100, 80, 200, 150);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Employee Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+<div class="card m-5 shadow-sm">
+  <h5 class="card-header bg-primary text-light fw-normal">
+    EMPLOYEE FORM
+  </h5>
+
+  <div class="card-body">
+
+    <!-- SUCCESS ALERT -->
+    <div id="successAlert" class="alert alert-success d-none text-center mb-3">
+       Employee details saved successfully
+    </div>
+
+    <!-- FORM -->
+    <form id="employeeForm" class="needs-validation" novalidate>
+
+      <!-- First & Last Name -->
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <label class="form-label">First name</label>
+          <input type="text" class="form-control" required>
+          <div class="invalid-feedback">First name is required</div>
+        </div>
+
+        <div class="col-6">
+          <label class="form-label">Last name</label>
+          <input type="text" class="form-control" required>
+          <div class="invalid-feedback">Last name is required</div>
+        </div>
+      </div>
+
+      <!-- Gender, Email, Mobile -->
+      <div class="row g-3 mb-3">
+
+        <div class="col-4">
+          <label class="form-label">Gender</label>
+          <select class="form-select" required>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+          <div class="invalid-feedback">Please select gender</div>
+        </div>
+
+        <div class="col-4">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required>
+          <div class="invalid-feedback">Enter a valid email</div>
+        </div>
+
+        <div class="col-4">
+          <label class="form-label">Mobile Number</label>
+          <input type="tel" class="form-control" pattern="[0-9]{10}" required>
+          <div class="invalid-feedback">Enter 10 digit mobile number</div>
+        </div>
+
+      </div>
+
+      <!-- Mandatory Skills -->
+      <div class="mb-3">
+        <label class="form-label">Mandatory Skills</label><br>
+
+        <div class="skills-group">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="skill" required>
+            <label class="form-check-label text-success">HTML 5</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="skill">
+            <label class="form-check-label text-success">Javascript</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="skill">
+            <label class="form-check-label text-success">C# Programming</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="skill">
+            <label class="form-check-label text-success">ASP.NET</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="skill">
+            <label class="form-check-label text-success">ASP.NET MVC</label>
+          </div>
+
+          <!-- FIXED: no d-block -->
+          <div class="invalid-feedback">
+            Please select a skill
+          </div>
+        </div>
+      </div>
+
+    <!-- Profile Picture -->
+<div class="mb-3">
+    <label class="form-label">Profile Picture</label>
+  
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Choose file"
+        id="fileText"
+        readonly
+        required
+      >
+  
+      <input
+        type="file"
+        class="d-none"
+        id="realFile"
+        accept="image/*"
+      >
+  
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        id="browseBtn"
+      >
+        Browse
+      </button>
+  
+      <div class="invalid-feedback">
+        Please upload a file
+      </div>
+    </div>
+  </div>
+  
+
+      <!-- Address -->
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <textarea class="form-control" rows="3" required></textarea>
+        <div class="invalid-feedback">Address is required</div>
+      </div>
+
+      <!-- Terms -->
+      <div class="form-check mb-4">
+        <input class="form-check-input" type="checkbox" required>
+        <label class="form-check-label text-success">
+          Agree to terms and conditions
+        </label>
+        <div class="invalid-feedback">
+          You must agree before submitting
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="d-flex justify-content-end gap-2">
+        <button type="reset" class="btn btn-danger">Cancel</button>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (() => {
+      const form = document.getElementById('employeeForm');
+      const alertBox = document.getElementById('successAlert');
+      const emailInput = document.getElementById('email');
+    
+      const realFile = document.getElementById('realFile');
+      const fileText = document.getElementById('fileText');
+      const browseBtn = document.getElementById('browseBtn');
+    
+      const emailRegex = /^[^\s@]+@[^\s@]+\.(com|org|net|edu|in|co)$/i;
+    
+      /* FILE UPLOAD */
+    
+      browseBtn.addEventListener('click', () => {
+        realFile.click();
+      });
+    
+      realFile.addEventListener('change', () => {
+        fileText.value = realFile.files.length
+          ? realFile.files[0].name
+          : '';
+      });
+    
+      /* FORM SUBMIT */
+    
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+    
+        // EMAIL REGEX VALIDATION
+        if (!emailRegex.test(emailInput.value)) {
+          emailInput.setCustomValidity('Invalid email');
+        } else {
+          emailInput.setCustomValidity('');
+        }
+    
+        // SKILLS RADIO VALIDATION
+        const skillChecked = document.querySelector('input[name="skill"]:checked');
+        const firstSkill = document.querySelector('input[name="skill"]');
+    
+        if (!skillChecked) {
+          firstSkill.setCustomValidity('Required');
+        } else {
+          firstSkill.setCustomValidity('');
+        }
+    
+        // FINAL VALIDATION
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
+          return;
+        }
+    
+        // SUCCESS
+        alertBox.classList.remove('d-none');
+        form.reset();
+        fileText.value = ''; // clear fake file input
+        form.classList.remove('was-validated');
+    
+        // AUTO HIDE ALERT
+        setTimeout(() => {
+          alertBox.classList.add('d-none');
+        }, 3000);
+      });
+    })();
+    </script>
+
+</body>

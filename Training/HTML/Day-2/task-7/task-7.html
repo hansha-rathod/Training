@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modal Editor</title>
+
+    <!-- Link External CSS -->
+    <link rel="stylesheet" href="task-7-style.css">
+</head>
+<body>
+
+    <button class="open-modal-btn" onclick="openModal()">Open Modal</button>
+
+    <!-- Modal Overlay -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <span>Modal title</span>
+                <span class="close-icon" onclick="closeModal()"></span>
+            </div>
+
+            <!-- Toolbar -->
+            <div class="toolbar">
+            
+                <button onclick="alignText('Left')">⯇</button>
+               
+                <button onclick="alignText('Right')">⯈</button>
+                <button onclick="alignText('Full')">☰</button>
+            </div>
+
+            <!-- Editor -->
+            <div class="editor" id="editor" contenteditable="true">
+                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi quas vel maiores. Et sequi quo magnam esse, dolorem repudiandae incidunt aut eum quas necessitatibus nisi, consequatur, atque sed autem repellendus?
+                
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button class="btn btn-close" onclick="closeModal()">Close</button>
+                <button class="btn btn-save" onclick="saveChanges()">Save changes</button>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <!--JS-->
+<script>
+    function openModal() {
+        document.getElementById("modalOverlay").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("modalOverlay").style.display = "none";
+    }
+
+    function format(command) {
+        document.execCommand(command, false, null);
+    }
+
+    function alignText(type) {
+        document.execCommand("justify" + type);
+    }
+
+    function saveChanges() {
+        const content = document.getElementById("editor").innerHTML;
+        console.log("Saved content:", content);
+        alert("Content saved successfully!");
+        closeModal();
+    }
+</script>
+
+</body>
+</html>

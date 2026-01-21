@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <!-- First row - operators -->
+            <button class="btn-calc btn-operator secondary-row" data-value="+">+</button>
+            <button class="btn-calc btn-operator secondary-row" data-value="-">−</button>
+            <button class="btn-calc btn-operator secondary-row" data-value="*">×</button>
+            <button class="btn-calc btn-operator secondary-row" data-value="/">÷</button>
+            <button class="btn-calc btn-operator secondary-row" data-value="%" style="background: #e8f5e9; color: #2e7d32; font-weight: 600;">%</button>
+            
+            <!-- Second row -->
+            <button class="btn-calc" data-value="7">7</button>
+            <button class="btn-calc" data-value="8">8</button>
+            <button class="btn-calc" data-value="9">9</button>
+            <button class="btn-calc btn-equals" data-value="=" style="grid-row: 2 / 6; grid-column: 4 / 6;">=</button>
+            
+            <!-- Third row -->
+            <button class="btn-calc" data-value="4">4</button>
+            <button class="btn-calc" data-value="5">5</button>
+            <button class="btn-calc" data-value="6">6</button>
+            
+            <!-- Fourth row -->
+            <button class="btn-calc" data-value="1">1</button>
+            <button class="btn-calc" data-value="2">2</button>
+            <button class="btn-calc" data-value="3">3</button>
+            
+            <!-- Fifth row -->
+            <button class="btn-calc btn-zero" data-value="0">0</button>
+            <button class="btn-calc" data-value=".">.</button>
+            <button class="btn-calc btn-clear" data-value="C">C</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>

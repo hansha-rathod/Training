@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+  </head>
+
+  <body >
+
+    <div class="p-5 m-5 d-flex justify-content-center">
+
+    <button
+      type="button"
+      class="btn btn-danger m-2"
+      data-bs-toggle="tooltip"
+      data-bs-placement="left"
+      title="A demo of a left tooltip">
+      Left Demo
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-success m-2"
+      data-bs-toggle="tooltip"
+      data-bs-placement="bottom"
+      title="A demo of bottom tooltip">
+      Bottom Demo
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-warning m-2"
+      data-bs-toggle="tooltip"
+      data-bs-placement="top"
+      title="A demo of a top tooltip">
+      Top Demo
+    </button>
+
+    <button
+      type="button"
+      class="btn btn-primary m-2"
+      data-bs-toggle="tooltip"
+      data-bs-placement="right"
+      title="A demo of a right tooltip">
+      Right Demo
+    </button>
+
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--initialize tooltips -->
+    <script>
+      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      const tooltipList = [...tooltipTriggerList].map(
+        tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl)
+      )
+    </script>
+
+  </body>
+</html>

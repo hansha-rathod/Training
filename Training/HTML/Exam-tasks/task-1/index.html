@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="document.getElementById('firstName').focus();">
+
+    <div class="container">
+        <div class="form-title">
+            <p style="color: brown;"><u>Student Registration Form</u></p>
+        </div>
+
+        <div class="form-content">
+            <form > 
+
+                <div class="form-row">
+                    <label class="form-label">First Name:</label>
+                    <div class="form-input">
+                        <input type="text" id="firstName" 
+                               placeholder="Enter your first name" 
+                               required onload="focus">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Last Name:</label>
+                    <div class="form-input">
+                        <input type="text" 
+                               placeholder="Enter your last name" 
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Email:</label>
+                    <div class="form-input">
+                        <input type="email" 
+                               placeholder="it should contain '@'" 
+                               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                               required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Mobile:</label>
+                    <div class="form-input">
+                        <input type="tel" pattern="[0-9]{10}" maxlength="10" placeholder="only 10 digits are allowed" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Gender:</label>
+                    <div class="form-input">
+                        <div class="gender-options">
+                            <label>
+                                <input type="radio" name="gender" value="male" required> Male
+                            </label>
+                            <label>
+                                <input type="radio" name="gender" value="female"> Female
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Date Of Birth:</label>
+                    <div class="form-input">
+                        <input type="date" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Address:</label>
+                    <div class="form-input">
+                        <textarea rows="4" required></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">City:</label>
+                    <div class="form-input">
+                        <input type="text" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Area PIN:</label>
+                    <div class="form-input">
+                        <input type="text" pattern="[0-9]{6}" maxlength="6" title="Please enter 6 digit PIN code" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">State:</label>
+                    <div class="form-input">
+                        <input type="text" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Qualification:</label>
+                    <div class="form-input">
+                        <select required>
+                            <option value="">Select Qualification</option>
+                            <option>High School</option>
+                            <option>Bachelor's Degree</option>
+                            <option>Master's Degree</option>
+                            <option>PhD</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Specialization:</label>
+                    <div class="form-input">
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" name="specialization" value="computer-science"> Computer Science
+                            </label>
+                            <label>
+                                <input type="checkbox" name="specialization" value="information-technology"> Information Technology
+                            </label>
+                            <label>
+                                <input type="checkbox" name="specialization" value="computer-architecture"> Computer Architecture
+                            </label>
+                            <label>
+                                <input type="checkbox" name="specialization" value="tele-communication"> Tele Communication
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label">Password:</label>
+                    <div class="form-input">
+                        <input type="password" minlength="6" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label class="form-label"></label>
+                    <div class="form-input">
+                        <button type="submit" class="register-btn">Registered</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

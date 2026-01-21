@@ -1,0 +1,19 @@
+body {
+    background-color: #f4f6f9;
+  }
+  
+  .card {
+    border-radius: 12px;
+  }
+  
+  .output-box {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #001f3f;
+    color: #fff;
+  }
+  
+  .output-box.no-tax {
+    background-color: #198754;
+  }
+  

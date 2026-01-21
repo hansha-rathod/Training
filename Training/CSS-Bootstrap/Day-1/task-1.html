@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task-1</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  </head>
+  <body class="bg-light">
+
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div id="successAlert" class="alert alert-success d-none" role="alert">
+                Form submitted successfully!
+              </div>
+              
+  
+          <form class="needs-validation bg-white p-4 rounded shadow-sm" novalidate>
+  
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu|gov|in)$"
+                required
+              >
+              <div class="invalid-feedback">
+                Please enter a valid email.
+              </div>
+            </div>
+  
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                minlength="6"
+                required
+              >
+              <div class="invalid-feedback">
+                Password must be at least 6 characters.
+              </div>
+            </div>
+  
+            <!-- Confirm Password -->
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                required
+              >
+              <div class="invalid-feedback">
+                This field does not match password.
+              </div>
+            </div>
+  
+            <!-- URL -->
+            <div class="mb-3">
+              <label for="url" class="form-label">URL</label>
+              <input
+                type="url"
+                class="form-control"
+                id="url"
+                required
+              >
+              <div class="invalid-feedback">
+                Please enter a valid URL.
+              </div>
+            </div>
+  
+            <button class="btn btn-primary w-100" type="submit">
+              Submit
+            </button>
+
+            
+  
+          </form>
+  
+        </div>
+      </div>
+    </div>
+  
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
+    <script>
+        (() => {
+          const form = document.querySelector('.needs-validation')
+          const password = document.getElementById('password')
+          const confirmPassword = document.getElementById('confirmPassword')
+          const successAlert = document.getElementById('successAlert')
+        
+          form.addEventListener('submit', event => {
+            event.preventDefault()
+        
+            // Password match validation
+            if (password.value !== confirmPassword.value) {
+              confirmPassword.setCustomValidity('Passwords do not match')
+            } else {
+              confirmPassword.setCustomValidity('')
+            }
+        
+            // If form is valid
+            if (form.checkValidity()) {
+              // Show success alert
+              successAlert.classList.remove('d-none')
+        
+              // Reset form & validation UI
+              form.reset()
+              form.classList.remove('was-validated')
+        
+              // Hide success alert after 3 seconds
+              setTimeout(() => {
+                successAlert.classList.add('d-none')
+              }, 3000)
+        
+            } else {
+              // Show validation UI
+              form.classList.add('was-validated')
+        
+              // Auto-remove validation errors after 3 seconds
+              setTimeout(() => {
+                form.classList.remove('was-validated')
+                confirmPassword.setCustomValidity('')
+              }, 3000)
+            }
+          })
+        })()
+        </script>
+        
+        
+
+</body>
+</html>

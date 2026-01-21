@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Proxied Website</title>
+</head>
+<body>
+  <h2>Website via Server Proxy</h2>
+
+  <div id="content"></div>
+
+  <script>
+    fetch("/proxy")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("content").innerHTML = html;
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Appointment Scheduler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="p-5">
+
+<!-- Button -->
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#appointmentModal">
+  Schedule Appointment
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="appointmentModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h5 class="modal-title">Appointment Scheduler</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Success Alert -->
+        <div id="successAlert" class="alert alert-success d-none text-center">
+          Appointment scheduled successfully
+        </div>
+
+        <form id="appointmentForm" class="needs-validation" novalidate>
+
+          <!-- First Name -->
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control" placeholder="Enter Your First Name" required>
+            <div class="invalid-feedback">First name is required</div>
+          </div>
+
+          <!-- Last Name -->
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control" placeholder="Enter Your Last Name" required>
+            <div class="invalid-feedback">Last name is required</div>
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label class="form-label">UNCC Email</label>
+            <input type="email" class="form-control"  id="email" placeholder="Enter Your UNCC Email" required>
+            <div class="invalid-feedback">Enter a valid UNCC email</div>
+          </div>
+
+          <!-- Course -->
+          <div class="mb-3">
+            <label class="form-label">What Course Do You Need Help With?</label>
+            <select class="form-select" required>
+              <option value="">Select a Course</option>
+              <option>Math</option>
+              <option>Computer Science</option>
+              <option>Physics</option>
+            </select>
+            <div class="invalid-feedback">Please select a course</div>
+          </div>
+
+          <!-- Tutor -->
+          <div class="mb-3">
+            <label class="form-label">Name of Preferred Tutor</label>
+            <select class="form-select" required>
+              <option value="">Anyone Available</option>
+              <option>Yash Sir</option>
+              <option>Isika Ma'am</option>
+            </select>
+            <div class="invalid-feedback">Please select a tutor</div>
+          </div>
+
+          <!-- Date -->
+          <div class="mb-3">
+            <label class="form-label">Calendar Date</label>
+            <input type="date" class="form-control" required>
+            <div class="invalid-feedback">Please choose a date</div>
+          </div>
+
+          <!-- Time -->
+          <div class="mb-3">
+            <label class="form-label">Preferred Time</label>
+            <input type="time" class="form-control" required>
+            <div class="invalid-feedback">Please choose a time</div>
+          </div>
+
+          <!-- Submit -->
+          <div class="d-flex justify-content-end">
+          <button type="submit" class="btn btn-info btn-sm text-white">
+            Schedule Appointment
+          </button>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        </div>
+
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    (() => {
+      const form = document.getElementById('appointmentForm');
+      const successAlert = document.getElementById('successAlert');
+      const emailInput = document.getElementById('email');
+    
+      // Bootstrap modal instance
+      const modalEl = document.getElementById('appointmentModal');
+      const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+    
+      // Email regex
+      const emailRegex = /^[^\s@]+@[^\s@]+\.(edu|com|org|net|in)$/i;
+    
+      form.addEventListener('submit', event => {
+        event.preventDefault();
+    
+        // EMAIL REGEX VALIDATION
+        if (!emailRegex.test(emailInput.value)) {
+          emailInput.setCustomValidity('Invalid email');
+        } else {
+          emailInput.setCustomValidity('');
+        }
+    
+        // BOOTSTRAP VALIDATION CHECK
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
+          return;
+        }
+    
+        // SUCCESS SUBMISSION
+        successAlert.classList.remove('d-none');
+    
+        // Reset form UI
+        form.reset();
+        form.classList.remove('was-validated');
+    
+        // Hide alert & close modal
+        setTimeout(() => {
+          successAlert.classList.add('d-none');
+          modal.hide();
+        }, 2000);
+      });
+    })();
+    </script>
+    
+
+</body>
+</html>

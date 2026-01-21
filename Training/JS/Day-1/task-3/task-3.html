@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task 3 : Tax Slab Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container my-5">
+  <div class="card shadow-lg p-4">
+    <h3 class="text-center mb-4">Tax Slab Calculation</h3>
+
+    <!-- Input Form -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label>Name</label>
+        <input type="text" id="name" class="form-control" required>
+      </div>
+
+      <div class="col-md-4">
+        <label>Mobile</label>
+        <input type="text" class="form-control" type="tel" pattern="{0-9}[10]" required>
+      </div>
+
+      <div class="col-md-4">
+        <label>Birthdate</label>
+        <input type="date" class="form-control">
+      </div>
+
+      <div class="col-md-4">
+        <label>Gender</label>
+        <select id="gender" class="form-select">
+          <option value="">Select</option>
+          <option value="men">Men</option>
+          <option value="women">Women</option>
+          <option value="senior">Senior Citizen</option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label>Income (INR)</label>
+        <input type="number" id="income" class="form-control">
+      </div>
+
+      <div class="col-md-4">
+        <label>Loan Amount (INR)</label>
+        <input type="number" id="loan" class="form-control">
+      </div>
+
+      <div class="col-md-4">
+        <label>Investment (INR)</label>
+        <input type="number" id="investment" class="form-control">
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-4 text-center">
+      <button class="btn btn-success px-4" onclick="calculateTax()">Calculate</button>
+      <button class="btn btn-warning px-4 ms-2" onclick="resetForm()">Reset</button>
+    </div>
+
+    <!-- Output -->
+    <div id="outputBox" class="output-box mt-4">
+      <h5>Output</h5>
+      <p><strong>Name :</strong> <span id="outName"></span></p>
+      <p><strong>Taxable Amount : </strong> <span id="taxableAmount"></span> INR</p>
+      <p><strong>Payable Tax : </strong> <span id="payableTax"></span> INR</p>
+    </div>
+
+    <!-- Tax Slabs -->
+    <hr>
+    <h6>Tax Slabs</h6>
+    <div class="row text-sm">
+      <div class="col-md-4">
+        <strong>For Men</strong><br>
+        Up to 2.4L -> No Tax<br>
+        2.4L to 6L -> 10%<br>
+        Above 6L -> 20%
+      </div>
+      <div class="col-md-4">
+        <strong>For Women</strong><br>
+        Up to 2.6L -> No Tax<br>
+        2.6L to 7L -> 10%<br>
+        Above 7L -> 20%
+      </div>
+      <div class="col-md-4">
+        <strong>For Senior Citizen</strong><br>
+        Up to 3L -> No Tax<br>
+        3L to 7L -> 10%<br>
+        Above 7L -> 20%
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
