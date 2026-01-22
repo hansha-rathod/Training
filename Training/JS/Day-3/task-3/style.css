@@ -1,0 +1,17 @@
+body {
+    background: #f4f6f9;
+    padding: 20px;
+  }
+
+  .calendar-wrapper {
+    max-width: 1200px;
+    margin: auto;
+    background: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    height: 85vh; 
+  }
+
+  #calendar {
+    height: 100%;
+  }
