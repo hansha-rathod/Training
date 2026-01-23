@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Expense - Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">Expense Tracker</div>
+        <div class="nav-links">
+            <a href="index.html">Dashboard</a>
+            <a href="add-expense.html" class="active">Add Expense</a>
+            <a href="view-expenses.html">View Expenses</a>
+            <a href="settings.html">Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Add Expense</h1>
+        
+        <div class="steps">
+            <div class="step active" data-step="1">Step 1: Details</div>
+            <div class="step" data-step="2">Step 2: Category & Date</div>
+            <div class="step" data-step="3">Step 3: Confirm</div>
+        </div>
+
+        <form id="expenseForm">
+            <!-- Step 1: Basic Details -->
+            <div class="form-step active" id="step1">
+                <h2>Step 1: Basic Details</h2>
+                
+                <div class="form-group">
+                    <label for="expenseTitle">Expense Title</label>
+                    <input type="text" id="expenseTitle" name="expenseTitle" required>
+                    <span class="error" id="titleError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
+                    <span class="error" id="amountError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Expense Type</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="expenseType" value="Income" checked>
+                            Income
+                        </label>
+                        <label>
+                            <input type="radio" name="expenseType" value="Expense">
+                            Expense
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn-cancel" onclick="window.location.href='index.html'">Cancel</button>
+                    <button type="button" class="btn-next" onclick="nextStep(2)">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Category & Date -->
+            <div class="form-step" id="step2">
+                <h2>Step 2: Category & Date</h2>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Food">Food</option>
+                        <option value="Transport">Transport</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Health">Health</option>
+                        <option value="Salary">Salary</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <span class="error" id="categoryError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                    <span class="error" id="dateError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentMode">Payment Mode</label>
+                    <select id="paymentMode" name="paymentMode" required>
+                        <option value="">Select Payment Mode</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Debit Card">Debit Card</option>
+                        <option value="UPI">UPI</option>
+                        <option value="Net Banking">Net Banking</option>
+                    </select>
+                    <span class="error" id="paymentError"></span>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn-cancel" onclick="prevStep(1)">Cancel</button>
+                    <button type="button" class="btn-next" onclick="nextStep(3)">Next</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Confirm -->
+            <div class="form-step" id="step3">
+                <h2>Step 3: Confirm</h2>
+                
+                <div class="confirmation-details">
+                    <div class="detail-row">
+                        <span class="label">Title:</span>
+                        <span id="confirmTitle"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Amount:</span>
+                        <span id="confirmAmount"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Type:</span>
+                        <span id="confirmType"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Category:</span>
+                        <span id="confirmCategory"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Date:</span>
+                        <span id="confirmDate"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Payment Mode:</span>
+                        <span id="confirmPayment"></span>
+                    </div>
+                </div>
+
+                <div class="form-buttons">
+                    <button type="button" class="btn-cancel" onclick="prevStep(2)">Cancel</button>
+                    <button type="button" class="btn-save" onclick="saveExpense()">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.19.5/jquery.validate.min.js"></script>
+    <script src="script.js"></script>
+    <script src="add-expense.js"></script>
+</body>
+</html>

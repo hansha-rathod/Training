@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Log Management System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Time Log Entry</h2>
+
+        <table class="input-table">
+            <thead>
+                <tr>
+                    <th>Sr.No</th>
+                    <th>Project Name*</th>
+                    <th>TimeLog Date*</th>
+                    <th>Phase*</th>
+                    <th>Status*</th>
+                    <th>Logged Hours*</th>
+                    <th>Billable Hours*</th>
+                    <th>Notes*</th>
+                    <th>Out of Stock</th>
+                    <th>BC Link*</th>
+                    <th>BC Description*</th>
+                </tr>
+            </thead>
+            <tbody id="inputTableBody">
+            </tbody>
+        </table>
+
+        <div class="button-group">
+            <button class="btn btn-delete" id="deleteLastRow">Delete Last Row</button>
+            <input type="number" id="addRowCount" min="1" value="1" placeholder="Count">
+            <button class="btn btn-add" id="addRowBtn">Add Row</button>
+        </div>
+
+        <div class="display-table-container" id="displayTableContainer">
+            <h2>Time Log Records</h2>
+            <table class="display-table">
+                <thead>
+                    <tr>
+                        <th>Sl.No</th>
+                        <th>Project Name</th>
+                        <th>Time/Date</th>
+                        <th>Phase</th>
+                        <th>Status</th>
+                        <th>Logged Hours</th>
+                        <th>Billable Hours</th>
+                        <th>Notes</th>
+                        <th>Out of Stock</th>
+                        <th>BC Link</th>
+                        <th>BC Description</th>
+                    </tr>
+                </thead>
+                <tbody id="displayTableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

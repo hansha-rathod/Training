@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Expense Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="brand">Expense Tracker</div>
+        <div class="nav-links">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="add-expense.html">Add Expense</a>
+            <a href="view-expenses.html">View Expenses</a>
+            <a href="settings.html">Settings</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Dashboard</h1>
+        
+        <div class="dashboard-cards">
+            <div class="card income-card">
+                <h3>Total Income</h3>
+                <p class="amount" id="totalIncome">₹0</p>
+            </div>
+            
+            <div class="card expense-card">
+                <h3>Total Expenses</h3>
+                <p class="amount" id="totalExpenses">₹0</p>
+            </div>
+            
+            <div class="card balance-card">
+                <h3>Balance</h3>
+                <p class="amount" id="balance">₹0</p>
+            </div>
+            
+            <div class="card transaction-card">
+                <h3>Transactions</h3>
+                <p class="amount" id="transactions">0</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        updateDashboard();
+    </script>
+</body>
+</html>
