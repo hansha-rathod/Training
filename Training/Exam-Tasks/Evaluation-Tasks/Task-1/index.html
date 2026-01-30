@@ -10,7 +10,10 @@
     
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+
+    <!-- Auth CSS -->
+    <link rel="stylesheet" href="auth.css">
+
     <!-- jQuery UI CSS -->
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     
@@ -21,28 +24,77 @@
     <div class="container-fluid">
         <!-- Header Section -->
         <header class="py-3 border-bottom">
-            <div class="d-flex justify-content-between align-items-start">
-                <!-- Type Navigation Pills (Global Filter) -->
-                <div id="type-nav" class="d-flex gap-2 flex-wrap">
-                    <button class="btn type-btn rounded-pill" data-type="Assets">Assets</button>
-                    <button class="btn type-btn rounded-pill" data-type="Liabilities">Liability</button>
-                    <button class="btn type-btn rounded-pill" data-type="Equity">Equity/Capital</button>
-                    <button class="btn type-btn rounded-pill" data-type="Revenue">Revenue</button>
-                    <button class="btn type-btn rounded-pill" data-type="COGS">CoGS</button>
-                    <button class="btn type-btn rounded-pill" data-type="Expense">G&A Expenses</button>
-                    <button class="btn type-btn rounded-pill" data-type="Other Rev & Exp">Other Revenue & Expense</button>
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Left: Title & Type Navigation -->
+                <div class="header-left">
+                    <h4 class="app-title mb-2">
+                        <i class="bi bi-diagram-3 text-info"></i> Account Mapping
+                    </h4>
+                    <!-- Type Navigation Pills (Global Filter) -->
+                    <div id="type-nav" class="d-flex gap-2 flex-wrap">
+                        <button class="btn type-btn rounded-pill" data-type="Assets">Assets</button>
+                        <button class="btn type-btn rounded-pill" data-type="Liabilities">Liabilities</button>
+                        <button class="btn type-btn rounded-pill" data-type="Equity">Equity</button>
+                        <button class="btn type-btn rounded-pill" data-type="Revenue">Revenue</button>
+                        <button class="btn type-btn rounded-pill" data-type="COGS">COGS</button>
+                        <button class="btn type-btn rounded-pill" data-type="Expense">Expense</button>
+                        <button class="btn type-btn rounded-pill" data-type="Other Revenue & Expense">Other Revenue & Expense</button>
+                    </div>
                 </div>
-                
-                <!-- Submit Button and Last Updated -->
-                <div class="text-end">
-                    <button id="submitBtn" class="btn btn-success btn-lg px-4">Submit</button>
-                    <div id="lastUpdated" class="small text-muted mt-2"></div>
+
+                <!-- Right: Action Buttons & Profile -->
+                <div class="header-right d-flex align-items-center gap-4">
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <div class="action-buttons-top">
+                            <button id="clearAllBtn" class="btn btn-action btn-clear">
+                                <i class="bi bi-trash3"></i>
+                                <span>Clear</span>
+                            </button>
+                            <button id="submitBtn" class="btn btn-action btn-save">
+                                <i class="bi bi-check-lg"></i>
+                                <span>Save</span>
+                            </button>
+                        </div>
+                        <div id="lastUpdated" class="last-updated small text-muted"></div>
+                    </div>
+
+                    <!-- Profile Dropdown -->
+                    <div class="dropdown">
+                        <button class="btn btn-profile" id="profileDropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <div class="profile-avatar">
+                                <i class="bi bi-person-circle"></i>
+                            </div>
+                            <div class="profile-info">
+                                <span class="profile-name" id="displayUsername">User</span>
+                                <i class="bi bi-chevron-down profile-dropdown-icon"></i>
+                            </div>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end profile-dropdown-menu">
+                            <li class="dropdown-header">
+                                <div class="profile-header-avatar">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <div class="profile-header-info">
+                                    <span class="profile-header-name" id="dropdownUsername">User</span>
+                                    <span class="profile-header-role">Signed in</span>
+                                </div>
+                            </li>
+                            <li><hr class="dropdown-divider"></hr></li>
+                            <li>
+                                <a class="dropdown-item" href="#" id="logoutBtn">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    <span>Sign Out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            
+
             <!-- Human Updated Indicator -->
             <div class="mt-2">
-                <span class="badge bg-warning text-dark">
+                <span class="badge bg-warning text-light">
                     <i class="bi bi-person-circle"></i> Human Updated
                 </span>
             </div>
@@ -50,32 +102,35 @@
         
         <!-- Main Content - 3 Column Layout -->
         <div class="row g-0 mt-3">
-            <!-- Left Column: Source Account Structure -->
-            <div class="col-md-3">
-                <div class="panel-header source-header">
-                    <h5 class="mb-0">Source Account Structure</h5>
-                </div>
-                <div id="source-structure" class="panel-content source-panel"></div>
-            </div>
-            
-            <!-- Center Column: Mapping Grid -->
-            <div class="col-md-5">
-                <div class="panel-header mapping-header">
-                    <h5 class="mb-0">Likely Destination Account</h5>
-                    <div class="d-flex gap-2 mt-2">
-                        <div class="col-label col-most-label">Most Likely</div>
-                        <div class="col-label col-likely-label">Likely</div>
-                        <div class="col-label col-possible-label">Possible</div>
+            <!-- Left + Center Combined: Source + Mapping Grid (Single Scroll) -->
+            <div class="col-md-8">
+                <div class="d-flex">
+                    <!-- Source Header -->
+                    <div class="panel-header source-header flex-shrink-0" style="width: 250px;">
+                        <h5 class="mb-0">Source Account Structure</h5>
+                        <div style="height: 38px;"></div>
+                    </div>
+                    <!-- Mapping Header -->
+                    <div class="panel-header mapping-header flex-grow-1">
+                        <h5 class="mb-0">Likely Destination Account</h5>
+                        <div class="d-flex gap-2 mt-2">
+                            <div class="col-label col-most-label">Most Likely</div>
+                            <div class="col-label col-likely-label">Likely</div>
+                            <div class="col-label col-possible-label">Possible</div>
+                        </div>
                     </div>
                 </div>
-                <div id="mapping-grid" class="panel-content mapping-panel"></div>
+                <!-- Combined Scrollable Content -->
+                <div id="combined-scroll-panel" class="panel-content combined-panel">
+                    <div id="source-mapping-rows"></div>
+                </div>
             </div>
             
             <!-- Right Column: Destination Account Structure -->
             <div class="col-md-4">
-                <div class="panel-header destination-header">
+                <div class="panel-header destination-header d-flex flex-column justify-content-center">
                     <h5 class="mb-0">Destination Account Structure</h5>
-                    <div id="dest-group-name" class="small text-white-50 mt-1"></div>
+                    <div style="height: 38px;"></div>
                 </div>
                 
                 <!-- Filter Navigation (Local to Destination) -->
@@ -152,7 +207,13 @@
     
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Auth JS (must be loaded before app.js) -->
+    <script src="auth.js"></script>
+
     <!-- App JS -->
     <script src="app.js"></script>
 </body>
