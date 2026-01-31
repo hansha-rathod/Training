@@ -1,5 +1,9 @@
 /**
- * JWT Authentication System - Simplified
+ * JWT Authentication System
+ *
+ * - User registration details are stored in localStorage
+ * - JWT token is generated fresh on every sign-in
+ * - JWT token is stored in localStorage for session management
  */
 
 // ============================================================================
@@ -10,24 +14,45 @@ class JWT {
         this.secret = 'account_secret_2024';
     }
 
+    /**
+     * Generate a new JWT token
+     * Tokens expire after 30 days
+     */
     generate(payload) {
         const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
-        const data = { ...payload, exp: Date.now() + 30 * 24 * 60 * 60 * 1000, iat: Date.now() };
+        const data = {
+            ...payload,
+            exp: Date.now() + 30 * 24 * 60 * 60 * 1000,  // 30 days expiration
+            iat: Date.now()  // Issued at time
+        };
         const payloadEnc = btoa(JSON.stringify(data));
-        const sig = btoa(this.secret + header + payloadEnc);
-        return header + '.' + payloadEnc + '.' + sig;
+        const signature = btoa(this.secret + header + payloadEnc);
+        return header + '.' + payloadEnc + '.' + signature;
     }
 
+    /**
+     * Verify JWT token and return payload
+     * Returns null if token is invalid or expired
+     */
     verify(token) {
         try {
             const parts = token.split('.');
             if (parts.length !== 3) return null;
             const data = JSON.parse(atob(parts[1]));
+            // Check expiration
             if (data.exp && data.exp < Date.now()) return null;
             return data;
         } catch { return null; }
     }
 }
+
+// ============================================================================
+// DEFAULT DEMO USERS
+// ============================================================================
+const defaultUsers = [
+    { id: 'u_001', username: 'admin', email: 'admin@example.com', passwordHash: 'h_k716945' }, // password: admin123
+    { id: 'u_002', username: 'demo', email: 'demo@example.com', passwordHash: 'h_k1001699' },  // password: demo123
+];
 
 // ============================================================================
 // AUTH OBJECT
@@ -39,24 +64,56 @@ const auth = {
     tokenKey: 'account_jwt',
     usersKey: 'account_users',
 
+    /**
+     * Initialize authentication system
+     * - Ensures default users exist in localStorage
+     * - Checks for valid session
+     */
     init() {
+        this.ensureDefaultUsers();
         return this.checkSession();
     },
 
+    /**
+     * Ensure default users exist in localStorage
+     * Called on initialization to populate localStorage with demo users
+     */
+    ensureDefaultUsers() {
+        const existingUsers = this.getUsers();
+        if (existingUsers.length === 0) {
+            // No users found, initialize with default users
+            localStorage.setItem(this.usersKey, JSON.stringify(defaultUsers));
+            console.log('[AUTH] ✓ Default users initialized in localStorage');
+        }
+    },
+
+    /**
+     * Check session by verifying JWT token from localStorage
+     * Returns true if valid token exists, false otherwise
+     */
     checkSession() {
         const token = localStorage.getItem(this.tokenKey);
         if (token) {
-            const data = this.jwt.verify(token);
-            if (data) {
+            const payload = this.jwt.verify(token);
+            if (payload) {
+                // Token is valid, set user info from token payload
                 this.isAuthenticated = true;
-                this.currentUser = { id: data.id, username: data.username, email: data.email };
-                console.log('[AUTH] ✓ User logged in:', this.currentUser.username);
+                this.currentUser = {
+                    id: payload.id,
+                    username: payload.username,
+                    email: payload.email
+                };
+                console.log('[AUTH] ✓ Valid JWT token found:', this.currentUser.username);
                 return true;
+            } else {
+                // Token is invalid or expired - remove it
+                localStorage.removeItem(this.tokenKey);
+                console.log('[AUTH] ✗ Invalid or expired token removed');
             }
         }
         this.isAuthenticated = false;
         this.currentUser = null;
-        console.log('[AUTH] ✗ No session');
+        console.log('[AUTH] ✗ No valid session');
         return false;
     },
 
@@ -68,64 +125,131 @@ const auth = {
         window.location.href = 'login.html';
     },
 
+    /**
+     * Logout - removes JWT token from localStorage
+     * User registration data remains in localStorage
+     */
     logout() {
         localStorage.removeItem(this.tokenKey);
         this.isAuthenticated = false;
         this.currentUser = null;
+        console.log('[AUTH] ✓ Logged out, token removed');
         window.location.href = 'login.html';
     },
 
+    /**
+     * Register - creates new user and stores in localStorage
+     * After registration, automatically logs in the user
+     */
     register(username, email, password) {
-        if (!username || username.length < 3) return { success: false, message: 'Username must be at least 3 characters' };
-        if (!email || !email.includes('@')) return { success: false, message: 'Enter valid email' };
-        if (!password || password.length < 6) return { success: false, message: 'Password must be 6+ characters' };
+        if (!username || username.length < 3) {
+            return { success: false, message: 'Username must be at least 3 characters' };
+        }
+        if (!email || !email.includes('@')) {
+            return { success: false, message: 'Enter valid email' };
+        }
+        if (!password || password.length < 6) {
+            return { success: false, message: 'Password must be 6+ characters' };
+        }
 
+        // Get existing users from localStorage
         const users = this.getUsers();
+
+        // Check if username already exists
         if (users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
-            return { success: false, message: 'Username exists' };
+            return { success: false, message: 'Username already exists' };
         }
+        // Check if email already exists
         if (users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
-            return { success: false, message: 'Email exists' };
+            return { success: false, message: 'Email already registered' };
         }
 
-        const user = {
+        // Create new user
+        const newUser = {
             id: 'u_' + Date.now(),
             username: username.trim(),
             email: email.trim().toLowerCase(),
-            password: this.hash(password)
+            passwordHash: this.hash(password),
+            createdAt: new Date().toISOString()
         };
 
-        users.push(user);
+        // Store user in localStorage
+        users.push(newUser);
         localStorage.setItem(this.usersKey, JSON.stringify(users));
-        this.loginUser(user);
-        return { success: true };
+        console.log('[AUTH] ✓ New user stored in localStorage:', newUser.username);
+
+        // Generate JWT token and login
+        return this.loginUser(newUser);
     },
 
+    /**
+     * Login - validates credentials and generates fresh JWT token
+     * Users are retrieved from localStorage
+     */
     login(username, password) {
         const users = this.getUsers();
         const user = users.find(u => u.username.toLowerCase() === username.toLowerCase());
 
-        if (!user) return { success: false, message: 'USER_NOT_FOUND' };
-        if (user.password !== this.hash(password)) return { success: false, message: 'Wrong password' };
+        if (!user) {
+            return { success: false, message: 'USER_NOT_FOUND' };
+        }
+        if (user.passwordHash !== this.hash(password)) {
+            return { success: false, message: 'Wrong password' };
+        }
 
-        this.loginUser(user);
+        // Generate fresh JWT token on every login
+        return this.loginUser(user);
+    },
+
+    /**
+     * loginUser - generates fresh JWT token and stores it in localStorage
+     * A new token is created every time the user signs in
+     */
+    loginUser(user) {
+        // Generate fresh JWT token with user info in payload
+        const token = this.jwt.generate({
+            id: user.id,
+            username: user.username,
+            email: user.email
+        });
+
+        // Store JWT token in localStorage
+        localStorage.setItem(this.tokenKey, token);
+
+        // Set current session state from token
+        this.isAuthenticated = true;
+        this.currentUser = {
+            id: user.id,
+            username: user.username,
+            email: user.email
+        };
+
+        console.log('[AUTH] ✓ Fresh JWT token generated for:', user.username);
         return { success: true };
     },
 
-    loginUser(user) {
-        const token = this.jwt.generate({ id: user.id, username: user.username, email: user.email });
-        localStorage.setItem(this.tokenKey, token);
-        this.isAuthenticated = true;
-        this.currentUser = { id: user.id, username: user.username, email: user.email };
-        console.log('[AUTH] ✓ Token stored, user logged in:', user.username);
-    },
-
+    /**
+     * Get all users from localStorage
+     */
     getUsers() {
         try {
-            return JSON.parse(localStorage.getItem(this.usersKey) || '[]');
-        } catch { return []; }
+            const usersData = localStorage.getItem(this.usersKey);
+            return usersData ? JSON.parse(usersData) : [];
+        } catch {
+            return [];
+        }
     },
 
+    /**
+     * Get the current JWT token
+     */
+    getToken() {
+        return localStorage.getItem(this.tokenKey);
+    },
+
+    /**
+     * Simple hash function for password verification
+     */
     hash(str) {
         let h = 0;
         for (let i = 0; i < str.length; i++) {
