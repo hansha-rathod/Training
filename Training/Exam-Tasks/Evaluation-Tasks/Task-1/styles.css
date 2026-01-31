@@ -61,23 +61,23 @@ body {
 }
 
 .btn-clear {
-    background: white;
-    color: #6c757d;
-    border: 1px solid var(--border-color);
+    background: transparent;
+    color: #dc3545;
+    border: 1px solid #dc3545;
 }
 
 .btn-clear:hover {
-    background: #f1f3f5;
-    color: #495057;
-    border-color: #ced4da;
+    background: #dc3545;
+    color: white;
 }
 
 .btn-save {
-    background: linear-gradient(135deg, var(--green) 0%, var(--teal) 100%);
+    background: #198754;
     color: white;
 }
 
 .btn-save:hover {
+    background: #157347;
     transform: translateY(-1px);
     box-shadow: 0 3px 10px rgba(25, 135, 84, 0.25);
     color: white;
@@ -95,17 +95,17 @@ body {
     align-items: center;
     gap: 0.65rem;
     padding: 0.35rem 0.4rem 0.35rem 0.4rem;
-    background: linear-gradient(135deg, rgba(13, 202, 240, 0.08) 0%, rgba(25, 135, 84, 0.08) 100%);
-    border: 1px solid rgba(13, 202, 240, 0.2);
+    background: rgba(13, 202, 240, 0.1);
+    border: 1px solid rgba(13, 202, 240, 0.3);
     border-radius: 10px;
     cursor: pointer;
     transition: all 0.25s ease;
 }
 
 .btn-profile:hover {
-    background: linear-gradient(135deg, rgba(13, 202, 240, 0.15) 0%, rgba(25, 135, 84, 0.15) 100%);
-    border-color: rgba(13, 202, 240, 0.3);
-    box-shadow: 0 2px 8px rgba(13, 202, 240, 0.15);
+    background: rgba(13, 202, 240, 0.2);
+    border-color: rgba(13, 202, 240, 0.5);
+    box-shadow: 0 2px 8px rgba(13, 202, 240, 0.2);
 }
 
 .btn-profile:active {
@@ -115,7 +115,7 @@ body {
 .profile-avatar {
     width: 34px;
     height: 34px;
-    background: linear-gradient(135deg, var(--info-blue) 0%, var(--primary-cyan) 100%);
+    background: #0dcaf0;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -175,14 +175,14 @@ header .mt-2 {
     align-items: center;
     gap: 0.65rem;
     padding: 0.65rem 0.5rem;
-    background: linear-gradient(135deg, rgba(13, 202, 240, 0.08) 0%, rgba(25, 135, 84, 0.08) 100%);
+    background: rgba(13, 202, 240, 0.1);
     border-radius: 8px;
 }
 
 .profile-header-avatar {
     width: 38px;
     height: 38px;
-    background: linear-gradient(135deg, var(--info-blue) 0%, var(--primary-cyan) 100%);
+    background: #0dcaf0;
     border-radius: 9px;
     display: flex;
     align-items: center;
