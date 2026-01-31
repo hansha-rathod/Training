@@ -461,6 +461,151 @@ const MASTER_FILE = 'Master_Chart_of_account.xlsx';
 const DESTINATION_FILE = 'destination_chart_of_account.xlsx';
 
 // ============================================================================
+// UTILITY HELPER FUNCTIONS - Reduces code redundancy
+// ============================================================================
+
+/**
+ * Find a row by index with automatic fallback
+ * Tries combined-row first (new structure), then mapping-row (old structure)
+ * @param {number|string} rowIndex - The row index to find
+ * @returns {jQuery} The row element or empty jQuery object
+ */
+function findRowByIndex(rowIndex) {
+    return $(`.combined-row[data-row-index="${rowIndex}"]`).length > 0
+        ? $(`.combined-row[data-row-index="${rowIndex}"]`)
+        : $(`.mapping-row[data-row-index="${rowIndex}"]`);
+}
+
+/**
+ * Find a row by row ID with automatic fallback
+ * @param {string} rowId - The row ID to find
+ * @returns {jQuery} The row element or empty jQuery object
+ */
+function findRowById(rowId) {
+    return $(`.combined-row[data-row-id="${rowId}"]`).length > 0
+        ? $(`.combined-row[data-row-id="${rowId}"]`)
+        : $(`.mapping-row[data-row-id="${rowId}"]`);
+}
+
+/**
+ * Get all three mapping cells from a row
+ * @param {jQuery|HTMLElement} $row - The row element
+ * @returns {object} Object with most, likely, possible cells
+ */
+function getCellsFromRow($row) {
+    $row = $($row);
+    return {
+        most: $row.find('.cell-most'),
+        likely: $row.find('.cell-likely'),
+        possible: $row.find('.cell-possible')
+    };
+}
+
+/**
+ * Extract item data from a jQuery element
+ * @param {jQuery|HTMLElement} $item - The item element
+ * @returns {object} Item data object with id, number, name, type
+ */
+function extractItemData($item) {
+    $item = $($item);
+    return {
+        id: $item.data('id'),
+        number: $item.data('number'),
+        name: $item.data('name'),
+        type: $item.data('type')
+    };
+}
+
+/**
+ * Show a SweetAlert notification with preset configurations
+ * @param {string} type - Alert type: 'success', 'error', 'warning', 'info', 'confirm', 'delete'
+ * @param {object} options - Additional options to override defaults
+ * @returns {Promise} SweetAlert result promise
+ */
+function showAlert(type, options = {}) {
+    const presets = {
+        success: {
+            icon: 'success',
+            confirmButtonColor: '#198754',
+            timer: 2000,
+            showConfirmButton: false,
+            timerProgressBar: true
+        },
+        error: {
+            icon: 'error',
+            confirmButtonColor: '#dc3545',
+            title: 'Error'
+        },
+        warning: {
+            icon: 'warning',
+            confirmButtonColor: '#f59e0b'
+        },
+        info: {
+            icon: 'info',
+            confirmButtonColor: '#17a2b8'
+        },
+        confirm: {
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'Cancel'
+        },
+        delete: {
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Delete',
+            cancelButtonText: 'Cancel'
+        },
+        save: {
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#198754',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, Save',
+            cancelButtonText: 'Cancel'
+        }
+    };
+
+    const config = { ...presets[type], ...options };
+    return Swal.fire(config);
+}
+
+/**
+ * Check if any cell in a row has mapped items
+ * @param {jQuery|HTMLElement} $row - The row element
+ * @returns {boolean} True if any cell has content
+ */
+function rowHasMappings($row) {
+    const cells = getCellsFromRow($row);
+    return cells.most[0]?.children.length > 0 ||
+           cells.likely[0]?.children.length > 0 ||
+           cells.possible[0]?.children.length > 0;
+}
+
+/**
+ * Execute function with error handling and notification
+ * @param {Function} fn - Function to execute
+ * @param {string} context - Context description for error messages
+ * @param {string} errorMessage - Custom error message (optional)
+ * @returns {boolean} True if successful, false otherwise
+ */
+function tryOrNotify(fn, context, errorMessage = null) {
+    try {
+        fn();
+        return true;
+    } catch (error) {
+        console.error(`[${context}]`, error);
+        const msg = errorMessage || `An error occurred in ${context.toLowerCase()}.`;
+        showToast(msg, 'error');
+        return false;
+    }
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
@@ -538,7 +683,7 @@ async function loadMasterChart() {
             throw new FileLoadError(MASTER_FILE, new Error(`HTTP ${response.status}`));
         }
 
-        const arrayBuffer = await response.arrayBuffer();
+        const arrayBuffer = await response.arrayBuffer(); // for raw binary data
         const workbook = new ExcelJS.Workbook();
         await workbook.xlsx.load(arrayBuffer);
 
@@ -582,7 +727,7 @@ async function loadMasterChart() {
             const name = row.name ? String(row.name).trim() : '';
 
             // Normalize type names to match navigation buttons
-            type = normalizeTypeName(type);
+            type = filterManager.mapDestToMasterType(type);
 
             // Skip header rows or invalid entries
             if (!number || number.toUpperCase() === type.toUpperCase() || number === '0') return;
@@ -641,39 +786,6 @@ function findColumn(headerRow, searchTerms) {
         }
     }
     return null;
-}
-
-/**
- * Normalize type names to match standard categories
- */
-function normalizeTypeName(type) {
-    if (!type) return 'Other Revenue & Expense';
-
-    const upperType = String(type).toUpperCase().trim();
-
-    // Direct matches
-    if (upperType === 'ASSETS' || upperType === 'ASSET') return 'Assets';
-    if (upperType === 'LIABILITIES' || upperType === 'LIABILITY') return 'Liabilities';
-    if (upperType === 'EQUITY' || upperType === 'EQUITY/CAPITAL' || upperType.includes('CAPITAL')) return 'Equity';
-    if (upperType === 'REVENUE') return 'Revenue';
-    if (upperType === 'COGS' || upperType === 'COST OF GOODS SOLD') return 'COGS';
-    if (upperType === 'EXPENSE' || upperType === 'EXPENSES' || upperType.includes('G&A')) return 'Expense';
-
-    // Check for "Other" patterns
-    if (upperType.includes('OTHER')) return 'Other Revenue & Expense';
-
-    // Fuzzy matches for Revenue
-    if (upperType.includes('INCOME') && !upperType.includes('OPERATING')) return 'Revenue';
-    if (upperType.includes('SALES')) return 'Revenue';
-
-    // Fuzzy matches for COGS
-    if (upperType.includes('COST') && (upperType.includes('GOODS') || upperType.includes('PRODUCT') || upperType.includes('SALE'))) return 'COGS';
-
-    // Fuzzy matches for Expense
-    if (upperType.includes('OPERATING')) return 'Expense';
-    if (upperType.includes('G&A') || upperType.includes('GENERAL') || upperType.includes('ADMINISTRATIVE')) return 'Expense';
-
-    return 'Other Revenue & Expense';
 }
 
 /**
@@ -1260,32 +1372,21 @@ function handleDrop($targetCell, $draggedItem) {
 
         // Get item data
         let itemData;
-        let originalDestItem = null;
 
         if (isFromDestination) {
-            itemData = {
-                id: $draggedItem.data('id'),
-                number: $draggedItem.data('number'),
-                name: $draggedItem.data('name'),
-                type: $draggedItem.data('type')
-            };
+            itemData = extractItemData($draggedItem);
 
             // CRITICAL FIX: Find the ORIGINAL destination item by ID (not the clone)
             // When using helper: 'clone', $draggedItem is the clone, not the original
-            const itemId = $draggedItem.data('id');
-            originalDestItem = $(`.dest-item[data-id="${itemId}"]`);
+            const itemId = itemData.id;
+            const originalDestItem = $(`.dest-item[data-id="${itemId}"]`);
 
             // Mark the original as mapped-hidden (it's already hidden from drag start)
             // This ensures the stop callback knows NOT to show it again
             originalDestItem.addClass('mapped-hidden');
         } else {
             // Moving from one mapping cell to another
-            itemData = {
-                id: $draggedItem.data('id'),
-                number: $draggedItem.data('number'),
-                name: $draggedItem.data('name'),
-                type: $draggedItem.data('type')
-            };
+            itemData = extractItemData($draggedItem);
             $draggedItem.remove();
         }
 
@@ -1321,40 +1422,31 @@ function handleDrop($targetCell, $draggedItem) {
  */
 function performShifting($targetCell, $occupiedItem, targetCol, rowIndex, rowId) {
     try {
-        const itemData = {
-            id: $occupiedItem.data('id'),
-            number: $occupiedItem.data('number'),
-            name: $occupiedItem.data('name'),
-            type: $occupiedItem.data('type')
-        };
+        const itemData = extractItemData($occupiedItem);
 
-        // Try combined row first, fallback to mapping row
-        let $row = $(`.combined-row[data-row-index="${rowIndex}"]`);
-        if ($row.length === 0) {
-            $row = $(`.mapping-row[data-row-index="${rowIndex}"]`);
-        }
+        // Use helper to find row with fallback
+        const $row = findRowByIndex(rowIndex);
+        if ($row.length === 0) return;
 
-        const $mostCell = $row.find('.cell-most');
-        const $likelyCell = $row.find('.cell-likely');
-        const $possibleCell = $row.find('.cell-possible');
+        const cells = getCellsFromRow($row);
 
         if (targetCol === 'most') {
-            const $likelyOccupant = $likelyCell.find('.mapped-item');
+            const $likelyOccupant = cells.likely.find('.mapped-item');
             if ($likelyOccupant.length > 0) {
-                const $possibleOccupant = $possibleCell.find('.mapped-item');
+                const $possibleOccupant = cells.possible.find('.mapped-item');
                 if ($possibleOccupant.length > 0) {
                     returnToDestination($possibleOccupant);
                 }
-                $possibleCell.empty().append($likelyOccupant);
+                cells.possible.empty().append($likelyOccupant);
             }
-            $likelyCell.empty().append($occupiedItem);
+            cells.likely.empty().append($occupiedItem);
 
         } else if (targetCol === 'likely') {
-            const $possibleOccupant = $possibleCell.find('.mapped-item');
+            const $possibleOccupant = cells.possible.find('.mapped-item');
             if ($possibleOccupant.length > 0) {
                 returnToDestination($possibleOccupant);
             }
-            $possibleCell.empty().append($occupiedItem);
+            cells.possible.empty().append($occupiedItem);
 
         } else if (targetCol === 'possible') {
             returnToDestination($occupiedItem);
@@ -1436,12 +1528,7 @@ function returnToDestination($mappedItem) {
  */
 function removeMappedItem($item) {
     try {
-        // Get parent row BEFORE removing item
-        let $parentRow = $item.closest('.combined-row');
-        if ($parentRow.length === 0) {
-            $parentRow = $item.closest('.mapping-row');
-        }
-
+        const $parentRow = $item.closest('.combined-row, .mapping-row');
         const rowIndex = $parentRow.data('row-index');
 
         saveUndoState('Item removed');
@@ -1461,32 +1548,18 @@ function removeMappedItem($item) {
  */
 function updateSourceRowIndicator(rowIndex) {
     try {
-        const $row = $(`.combined-row[data-row-index="${rowIndex}"]`);
+        const $row = findRowByIndex(rowIndex);
 
         if ($row.length === 0) {
             console.warn('[Update Indicator] Row not found for index:', rowIndex);
             return;
         }
 
-        // Directly find each cell and check if it has content
-        const $mostCell = $row.find('.cell-most');
-        const $likelyCell = $row.find('.cell-likely');
-        const $possibleCell = $row.find('.cell-possible');
-
-        const hasMost = $mostCell.length > 0 && $mostCell[0].children.length > 0;
-        const hasLikely = $likelyCell.length > 0 && $likelyCell[0].children.length > 0;
-        const hasPossible = $possibleCell.length > 0 && $possibleCell[0].children.length > 0;
-
-        const hasMappings = hasMost || hasLikely || hasPossible;
-
+        const hasMappings = rowHasMappings($row);
         const $indicator = $row.find('.combined-source-mapped');
 
         if ($indicator.length > 0) {
-            if (hasMappings) {
-                $indicator.removeClass('d-none');
-            } else {
-                $indicator.addClass('d-none');
-            }
+            $indicator.toggleClass('d-none', !hasMappings);
         }
     } catch (error) {
         console.error('[Update Indicator Error]', error);
@@ -1580,7 +1653,6 @@ function saveMapping() {
 
         // Try combined rows first (new structure), fallback to mapping rows
         let $rows = $('.combined-row[data-row-id]').not('.combined-heading-row');
-
         if ($rows.length === 0) {
             $rows = $('.mapping-row[data-row-id]');
         }
@@ -1597,11 +1669,7 @@ function saveMapping() {
                 const $item = $cell.find('.mapped-item');
 
                 if ($item.length > 0) {
-                    rowData[col] = {
-                        id: $item.data('id'),
-                        number: $item.data('number'),
-                        name: $item.data('name')
-                    };
+                    rowData[col] = extractItemData($item);
                     mappedCount++;
                 }
             });
@@ -1619,27 +1687,17 @@ function saveMapping() {
         if (newJSON === existingJSON && mappedCount === 0) {
             // Nothing to save
             $btn.prop('disabled', false).text('Submit');
-
-            Swal.fire({
-                icon: 'warning',
+            showAlert('warning', {
                 title: 'No Changes Detected',
-                text: 'There are no mappings to save. Please map some accounts before saving.',
-                confirmButtonColor: '#17a2b8',
-                confirmButtonText: 'OK'
+                text: 'There are no mappings to save. Please map some accounts before saving.'
             });
             return;
         }
 
         // Show confirmation dialog
-        Swal.fire({
+        showAlert('save', {
             title: 'Save Mappings?',
-            text: `You are about to save ${mappedCount} mapping(s) for ${currentType}. Continue?`,
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#198754',
-            cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Yes, Save',
-            cancelButtonText: 'Cancel'
+            text: `You are about to save ${mappedCount} mapping(s) for ${currentType}. Continue?`
         }).then((result) => {
             if (result.isConfirmed) {
                 performSave(mappingData, $btn);
@@ -1651,12 +1709,7 @@ function saveMapping() {
     } catch (error) {
         console.error('[Save Error]', error);
         $btn.prop('disabled', false).text('Submit');
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to save mapping. Please try again.',
-            confirmButtonColor: '#dc3545'
-        });
+        showAlert('error', { text: 'Failed to save mapping. Please try again.' });
     }
 }
 
@@ -1670,22 +1723,16 @@ function performSave(mappingData, $btn) {
     if (result.success) {
         updateLastUpdated(mappingData.updatedAt);
 
-        // CRITICAL: Update all source row indicators after saving
-        // This ensures tick marks reflect the actual current state of the DOM
+        // Update all source row indicators after saving
         $('.combined-row[data-row-index]').each(function() {
-            const rowIndex = $(this).data('row-index');
-            updateSourceRowIndicator(rowIndex);
+            updateSourceRowIndicator($(this).data('row-index'));
         });
 
         $btn.prop('disabled', false).text('Submit');
 
-        Swal.fire({
-            icon: 'success',
+        showAlert('success', {
             title: 'Saved Successfully!',
-            text: `Mappings for ${currentType} have been saved.`,
-            timer: 2000,
-            showConfirmButton: false,
-            timerProgressBar: true
+            text: `Mappings for ${currentType} have been saved.`
         });
     } else {
         throw new StorageError('Failed to save mapping');
@@ -1696,29 +1743,28 @@ function performSave(mappingData, $btn) {
  * Clear all mappings - removes all items from mapping cells and resets localStorage
  */
 function clearAllMappings() {
-    // Check if there's anything to clear
-    const mappedItems = $('.mapped-item');
-    const hasMappings = mappedItems.length > 0;
+    const hasMappings = $('.mapped-item').length > 0;
 
-    const title = hasMappings ? 'Clear All Mappings?' : 'Nothing to Clear';
-    const text = hasMappings
-        ? 'This will remove all mapped items and reset the page. This action cannot be undone.'
-        : 'There are no mappings to clear.';
-
-    Swal.fire({
-        title: title,
-        text: text,
+    const config = {
+        title: hasMappings ? 'Clear All Mappings?' : 'Nothing to Clear',
+        text: hasMappings
+            ? 'This will remove all mapped items and reset the page. This action cannot be undone.'
+            : 'There are no mappings to clear.',
         icon: hasMappings ? 'warning' : 'info',
         showCancelButton: hasMappings,
-        confirmButtonColor: hasMappings ? '#dc3545' : '#6c757d',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: hasMappings ? 'Yes, Clear All' : 'OK',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.isConfirmed && hasMappings) {
-            performClearAll();
-        }
-    });
+        confirmButtonText: hasMappings ? 'Yes, Clear All' : 'OK'
+    };
+
+    // Use delete preset for hasMappings case (red confirm button)
+    if (hasMappings) {
+        showAlert('delete', config).then((result) => {
+            if (result.isConfirmed) {
+                performClearAll();
+            }
+        });
+    } else {
+        showAlert('info', config);
+    }
 }
 
 /**
@@ -1765,24 +1811,15 @@ function performClearAll() {
 
         $btn.prop('disabled', false).text('Clear All');
 
-        Swal.fire({
-            icon: 'success',
+        showAlert('success', {
             title: 'Cleared Successfully!',
-            text: 'All mappings have been removed and storage has been reset.',
-            timer: 2000,
-            showConfirmButton: false,
-            timerProgressBar: true
+            text: 'All mappings have been removed and storage has been reset.'
         });
 
     } catch (error) {
         console.error('[Clear Error]', error);
         $btn.prop('disabled', false).text('Clear All');
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Failed to clear mappings. Please try again.',
-            confirmButtonColor: '#dc3545'
-        });
+        showAlert('error', { text: 'Failed to clear mappings. Please try again.' });
     }
 }
 
@@ -1799,17 +1836,8 @@ function loadPersistedMapping() {
 
         // Apply mappings
         Object.entries(mappingData.rows).forEach(([rowId, rowData]) => {
-            // Try combined row first (new structure)
-            let $row = $(`.combined-row[data-row-id="${rowId}"]`);
-
-            // Fallback to old mapping row structure
-            if ($row.length === 0) {
-                $row = $(`.mapping-row[data-row-id="${rowId}"]`);
-            }
-
-            if ($row.length === 0) {
-                return;
-            }
+            const $row = findRowById(rowId);
+            if ($row.length === 0) return;
 
             Object.entries(rowData).forEach(([col, itemData]) => {
                 const $cell = $row.find(`.cell-${col}`);
@@ -1823,8 +1851,7 @@ function loadPersistedMapping() {
             });
 
             // Update source row indicator
-            const rowIndex = $row.data('row-index');
-            updateSourceRowIndicator(rowIndex);
+            updateSourceRowIndicator($row.data('row-index'));
         });
 
         // Refresh draggable and sortable after loading mappings
@@ -1939,24 +1966,10 @@ function performUndo() {
             $('.combined-row[data-row-index]').each(function() {
                 const $row = $(this);
                 const $indicator = $row.find('.combined-source-mapped');
-
-                // Directly find each cell and check if it has content
-                const $mostCell = $row.find('.cell-most');
-                const $likelyCell = $row.find('.cell-likely');
-                const $possibleCell = $row.find('.cell-possible');
-
-                const hasMost = $mostCell.length > 0 && $mostCell[0].children.length > 0;
-                const hasLikely = $likelyCell.length > 0 && $likelyCell[0].children.length > 0;
-                const hasPossible = $possibleCell.length > 0 && $possibleCell[0].children.length > 0;
-
-                const hasMappings = hasMost || hasLikely || hasPossible;
+                const hasMappings = rowHasMappings($row);
 
                 if ($indicator.length > 0) {
-                    if (hasMappings) {
-                        $indicator.removeClass('d-none');
-                    } else {
-                        $indicator.addClass('d-none');
-                    }
+                    $indicator.toggleClass('d-none', !hasMappings);
                 }
             });
         });
@@ -2092,15 +2105,11 @@ function cleanNumber(num) {
 function handleLogout(e) {
     e.preventDefault();
 
-    Swal.fire({
+    showAlert('confirm', {
         title: 'Logout?',
         text: 'Are you sure you want to sign out? Any unsaved changes will be lost.',
-        icon: 'question',
-        showCancelButton: true,
         confirmButtonColor: '#dc3545',
-        cancelButtonColor: '#6c757d',
-        confirmButtonText: 'Yes, Logout',
-        cancelButtonText: 'Cancel'
+        confirmButtonText: 'Yes, Logout'
     }).then((result) => {
         if (result.isConfirmed) {
             // Perform logout
@@ -2108,8 +2117,7 @@ function handleLogout(e) {
                 auth.logout();
             } else {
                 // Fallback if auth not loaded
-                localStorage.removeItem('account_mapping::auth_token');
-                localStorage.removeItem('account_mapping::auth_user');
+                localStorage.removeItem('account_jwt');
                 window.location.href = 'login.html';
             }
         }
