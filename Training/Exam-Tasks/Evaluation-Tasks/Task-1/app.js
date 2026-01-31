@@ -470,21 +470,12 @@ $(document).ready(function() {
     // Authentication Guard - Check if user is logged in
     if (typeof auth !== 'undefined' && !auth.isAuthenticated) {
         console.warn('User not authenticated, redirecting to login...');
-        Swal.fire({
-            icon: 'warning',
-            title: 'Authentication Required',
-            text: 'Please sign in to access the Account Mapping application.',
-            confirmButtonColor: '#0dcaf0',
-            confirmButtonText: 'Sign In',
-            allowOutsideClick: false,
-            allowEscapeKey: false
-        }).then(() => {
-            if (typeof auth !== 'undefined') {
-                auth.redirectToLogin();
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
+        // Immediate redirect to login page
+        if (typeof auth !== 'undefined') {
+            auth.redirectToLogin();
+        } else {
+            window.location.href = 'login.html';
+        }
         return;
     }
 
