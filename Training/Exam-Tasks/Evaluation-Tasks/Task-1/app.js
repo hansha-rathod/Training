@@ -1226,16 +1226,15 @@ function initializeDragDrop() {
 
 /**
  * Make destination items draggable
- * Item vanishes from destination panel when drag starts
- * Returns to destination if drop is invalid
+ * Items remain visible in destination list after being mapped
  */
 function makeDestinationDraggable() {
     try {
         // Remove draggable from all items first
         $('.dest-item').draggable('destroy');
 
-        // Only make visible items draggable
-        $('.dest-item:visible').each(function() {
+        // Make all destination items draggable
+        $('.dest-item').each(function() {
             const $item = $(this);
             // Skip if already draggable
             if ($item.hasClass('ui-draggable')) {
@@ -1249,19 +1248,10 @@ function makeDestinationDraggable() {
                 cursor: 'move',
                 containment: 'document',
                 start: function() {
-                    // CRITICAL: Hide the original item immediately when drag starts
-                    $(this).hide().addClass('dragging-in-progress');
+                    $(this).addClass('dragging-in-progress');
                 },
                 stop: function() {
-                    const $this = $(this);
-                    // CRITICAL: Only show if NOT mapped-hidden
-                    // If mapped-hidden, the item was successfully dropped and should stay hidden
-                    if (!$this.hasClass('mapped-hidden')) {
-                        $this.show().removeClass('dragging-in-progress');
-                    } else {
-                        // Ensure it stays hidden and clean up
-                        $this.hide().removeClass('dragging-in-progress');
-                    }
+                    $(this).removeClass('dragging-in-progress');
                 }
             });
         });
@@ -1272,7 +1262,6 @@ function makeDestinationDraggable() {
 
 /**
  * Make destination list sortable using jQuery UI Sortable
- * Fixed to prevent drag-drop glitches with hidden items
  */
 function makeDestinationSortable() {
     try {
@@ -1282,7 +1271,7 @@ function makeDestinationSortable() {
         }
 
         $('#dest-list').sortable({
-            items: '.dest-item:visible',  // Only allow sorting of visible items
+            items: '.dest-item',  // All items are now visible
             handle: '.dest-item-drag-handle',
             placeholder: 'dest-item-placeholder',
             tolerance: 'pointer',
@@ -1290,7 +1279,6 @@ function makeDestinationSortable() {
             opacity: 0.8,
             forcePlaceholderSize: true,
             helper: 'clone',
-            cancel: ':hidden',  // Cancel sorting on hidden items
             start: function(_, ui) {
                 ui.placeholder.height(ui.item.height());
                 ui.placeholder.css('visibility', 'visible');
@@ -1367,28 +1355,39 @@ function handleDrop($targetCell, $draggedItem) {
         const rowId = $targetCell.data('row-id');
         const targetCol = $targetCell.data('col');
 
-        // Save undo state
-        saveUndoState('Item moved');
-
         // Get item data
         let itemData;
 
         if (isFromDestination) {
             itemData = extractItemData($draggedItem);
-
-            // CRITICAL FIX: Find the ORIGINAL destination item by ID (not the clone)
-            // When using helper: 'clone', $draggedItem is the clone, not the original
-            const itemId = itemData.id;
-            const originalDestItem = $(`.dest-item[data-id="${itemId}"]`);
-
-            // Mark the original as mapped-hidden (it's already hidden from drag start)
-            // This ensures the stop callback knows NOT to show it again
-            originalDestItem.addClass('mapped-hidden');
         } else {
             // Moving from one mapping cell to another
             itemData = extractItemData($draggedItem);
             $draggedItem.remove();
         }
+
+        // CHECK: Prevent duplicate destination items in the same row
+        const $row = findRowByIndex(rowIndex);
+        if ($row.length > 0) {
+            const cells = getCellsFromRow($row);
+            // Check if this item already exists in any cell of the same row
+            const existingInRow = [
+                cells.most.find('.mapped-item'),
+                cells.likely.find('.mapped-item'),
+                cells.possible.find('.mapped-item')
+            ].filter($item => $item.length > 0);
+
+            for (const $existing of existingInRow) {
+                if ($existing.data('id') === itemData.id) {
+                    // Item already mapped in this row, show notification and return
+                    showToast('This account is already mapped in this row', 'warning');
+                    return;
+                }
+            }
+        }
+
+        // Save undo state
+        saveUndoState('Item moved');
 
         // Check if target cell is occupied
         const $existingItem = $targetCell.find('.mapped-item');
@@ -1405,9 +1404,8 @@ function handleDrop($targetCell, $draggedItem) {
         // Update source row indicator
         updateSourceRowIndicator(rowIndex);
 
-        // CRITICAL: Delay refreshing draggable to avoid race condition with drag stop event
+        // Refresh sortable after drop
         setTimeout(() => {
-            makeDestinationDraggable();
             refreshDestinationSortable();
         }, 100);
 
@@ -1500,23 +1498,15 @@ function createMappedItem(itemData) {
 
 /**
  * Return a mapped item back to the destination list
+ * Note: Destination items remain visible, so this just removes the mapped item
  */
 function returnToDestination($mappedItem) {
     try {
-        const itemId = $mappedItem.data('id');
-
-        // Show the original destination item
-        const $destItem = $(`.dest-item[data-id="${itemId}"]`);
-        $destItem.show().removeClass('mapped-hidden');
-
-        // Reapply draggable to visible items
-        makeDestinationDraggable();
+        // Remove the mapped item from the cell
+        $mappedItem.remove();
 
         // Refresh sortable
         refreshDestinationSortable();
-
-        // Remove the mapped item
-        $mappedItem.remove();
 
     } catch (error) {
         console.error('[Return to Destination Error]', error);
@@ -1572,13 +1562,12 @@ function updateSourceRowIndicator(rowIndex) {
 
 /**
  * Filter destination list (LOCAL filter - filters by master type)
- * IMPORTANT: Mapped items (with mapped-hidden class) should ALWAYS stay hidden
  *
  * The destination list shows ALL items from allDestinationData
  * Filters work as follows:
  * - If localDestFilter is set (not "All"), only show items matching that master type
  * - If localDestFilter is "All", show all items for the current global type context
- * - Mapped items (mapped-hidden) are always hidden regardless of filters
+ * - Items remain visible even after being mapped to source accounts
  */
 function filterDestinationList() {
     try {
@@ -1586,12 +1575,6 @@ function filterDestinationList() {
 
         $items.each(function() {
             const $item = $(this);
-
-            // CRITICAL: If item is mapped (in a mapping cell), it MUST stay hidden
-            if ($item.hasClass('mapped-hidden')) {
-                $item.hide();
-                return; // Skip all other logic for mapped items
-            }
 
             const itemType = $item.data('type') || '';
             const itemGroup = $item.data('group') || '';
@@ -1775,16 +1758,6 @@ function performClearAll() {
     $btn.prop('disabled', true).text('Clearing...');
 
     try {
-        // Remove all mapped items from cells and return to destination
-        $('.mapped-item').each(function() {
-            const $mappedItem = $(this);
-            const itemId = $mappedItem.data('id');
-
-            // Show the original destination item
-            const $destItem = $(`.dest-item[data-id="${itemId}"]`);
-            $destItem.show().removeClass('mapped-hidden');
-        });
-
         // Clear all mapping cells
         $('.mapping-cell').empty();
 
@@ -1845,9 +1818,7 @@ function loadPersistedMapping() {
                 $cell.empty().append($mappedItem);
                 makeMappedDraggable($mappedItem);
 
-                // Hide from destination list and mark as mapped
-                const $destItem = $(`.dest-item[data-id="${itemData.id}"]`);
-                $destItem.hide().addClass('mapped-hidden');
+                // Note: Destination items remain visible in the list
             });
 
             // Update source row indicator
