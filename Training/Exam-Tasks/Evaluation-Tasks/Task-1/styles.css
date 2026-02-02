@@ -703,10 +703,8 @@ header .mt-2 {
     cursor: grabbing;
 }
 
-/* CRITICAL: Mapped items must NEVER appear in destination list */
-.dest-item.mapped-hidden {
-    display: none !important;
-}
+/* Mapped items now REMAIN visible in destination list */
+/* .dest-item.mapped-hidden { display: none !important; } */
 
 /* Sortable Placeholder */
 .dest-item-placeholder {
