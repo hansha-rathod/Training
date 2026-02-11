@@ -1,0 +1,301 @@
+USE examDB
+
+
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Address VARCHAR(255)
+);
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,
+    ProductName VARCHAR(100) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL,
+    StockQuantity INT NOT NULL CHECK (StockQuantity >= 0)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    OrderDate DATE NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL,
+    CONSTRAINT FK_Orders_Customers 
+        FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+);
+
+
+CREATE TABLE Cart (
+    CartID INT PRIMARY KEY,
+    CustomerID INT NOT NULL,
+    ProductID INT NOT NULL,
+    Quantity INT NOT NULL CHECK (Quantity > 0),
+    AddedDate DATE NOT NULL,
+    CONSTRAINT FK_Cart_Customers 
+        FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID),
+    CONSTRAINT FK_Cart_Products 
+        FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+
+INSERT INTO Customers VALUES
+(1, 'John Doe', 'john@example.com', '123 Elm St'),
+(2, 'Jane Smith', 'jane@example.com', '456 Oak St'),
+(3, 'Alice Brown', 'alice@example.com', '789 Pine St');
+
+INSERT INTO Products VALUES
+(101, 'Laptop', 800, 50),
+(102, 'Smartphone', 500, 30),
+(103, 'Headphones', 150, 100);
+
+
+INSERT INTO Orders VALUES
+(201, 1, '2024-08-01', 1200),
+(202, 2, '2024-08-03', 500),
+(203, 1, '2024-08-05', 800);
+
+
+INSERT INTO Cart VALUES
+(301, 1, 101, 2, '2024-07-28'),
+(302, 2, 102, 1, '2024-07-29'),
+(303, 3, 103, 3, '2024-07-30');
+
+--2. Write an SQL query to group orders by customer and report the total amount spent by each customer.
+SELECT 
+    c.CustomerID,
+    c.Name AS CustomerName,
+    SUM(o.TotalAmount) AS TotalAmountSpent
+FROM Customers c
+LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.CustomerID, c.Name
+HAVING 
+   SUM(o.TotalAmount) > 1000;
+
+
+
+--3 Write a query to list the top 5 products based on the highest number of orders.
+SELECT TOP 5
+    p.ProductID,
+    p.ProductName,
+    SUM(c.Quantity) AS TotalQuantitySold
+FROM Products p
+JOIN Cart c 
+    ON p.ProductID = c.ProductID
+GROUP BY 
+    p.ProductID, 
+    p.ProductName
+ORDER BY 
+    TotalQuantitySold DESC;
+
+--4 Create a stored procedure to insert a new product or update the existing product's details (name, price, stock quantity) if the ProductID already exists.
+
+
+CREATE PROCEDURE sp_InsertOrUpdateProduct
+    @ProductID INT,
+    @ProductName VARCHAR(100),
+    @Price DECIMAL(10,2),
+    @StockQuantity INT
+AS
+BEGIN
+    IF EXISTS (SELECT 1 FROM Products WHERE ProductID = @ProductID)
+    BEGIN
+        UPDATE Products
+        SET ProductName = @ProductName,
+            Price = @Price,
+            StockQuantity = @StockQuantity
+        WHERE ProductID = @ProductID;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Products
+        VALUES (@ProductID, @ProductName, @Price, @StockQuantity);
+    END
+END;
+
+EXEC sp_InsertOrUpdateProduct 
+    @ProductID = 104,
+    @ProductName = 'Tablet',
+    @Price = 600,
+    @StockQuantity = 40;
+
+SELECT * FROM Products
+
+--5  Write a stored procedure to insert a new order and update the product stock quantity accordingly
+
+CREATE PROCEDURE sp_InsertOrder
+    @OrderID INT,
+    @CustomerID INT,
+    @OrderDate DATE,
+    @ProductID INT,
+    @Quantity INT
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+            DECLARE @Price DECIMAL(10,2);
+            DECLARE @TotalAmount DECIMAL(10,2);
+
+            SELECT @Price = Price 
+            FROM Products 
+            WHERE ProductID = @ProductID;
+
+            -- Optional safety check
+            IF @Price IS NULL
+            BEGIN
+                RAISERROR('Invalid ProductID.', 16, 1);
+            END
+
+            SET @TotalAmount = @Price * @Quantity;
+
+            INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount)
+            VALUES (@OrderID, @CustomerID, @OrderDate, @TotalAmount);
+
+            UPDATE Products
+            SET StockQuantity = StockQuantity - @Quantity
+            WHERE ProductID = @ProductID;
+
+            COMMIT TRANSACTION;
+        END TRY
+
+        BEGIN CATCH
+            ROLLBACK TRANSACTION;
+
+            -- Optional: return error details
+            DECLARE @ErrorMessage NVARCHAR(4000) = ERROR_MESSAGE();
+            DECLARE @ErrorSeverity INT = ERROR_SEVERITY();
+            DECLARE @ErrorState INT = ERROR_STATE();
+
+            RAISERROR (@ErrorMessage, @ErrorSeverity, @ErrorState);
+        END CATCH;
+
+END
+
+
+SELECT * FROM Orders;
+
+
+--6 Create a function to calculate the discount based on the order total amount: 
+
+
+CREATE FUNCTION fn_CalculateDiscount (@Amount DECIMAL(10,2))
+RETURNS DECIMAL(10,2)
+AS
+BEGIN
+    DECLARE @Discount DECIMAL(10,2);
+
+    IF @Amount >= 1000
+        SET @Discount = @Amount * 0.20;
+    ELSE IF @Amount >= 500
+        SET @Discount = @Amount * 0.10;
+    ELSE
+        SET @Discount = 0;
+
+    RETURN @Discount;
+END;
+
+
+
+--7 Write a stored procedure that uses this function to apply the discount and return the final payable amount for a given OrderID. 
+
+CREATE PROCEDURE sp_ApplyDiscount
+    @OrderID INT
+AS
+BEGIN
+    DECLARE @OriginalAmount DECIMAL(10,2);
+    DECLARE @Discount DECIMAL(10,2);
+    DECLARE @FinalAmount DECIMAL(10,2);
+
+    SELECT @OriginalAmount = TotalAmount
+    FROM Orders
+    WHERE OrderID = @OrderID;
+
+    SET @Discount = dbo.fn_CalculateDiscount(@OriginalAmount);
+    SET @FinalAmount = @OriginalAmount - @Discount;
+
+    SELECT 
+        @OrderID AS OrderID,
+        @OriginalAmount AS OriginalAmount,
+        @Discount AS DiscountApplied,
+        @FinalAmount AS FinalAmount;
+END;
+
+
+--8 Create a stored procedure that accepts a comma-separated list of ProductIDs, splits the values, and joins with the Products table to display the product details (name, price, stock quantity). 
+
+
+CREATE PROCEDURE sp_GetProductsByList
+    @ProductList VARCHAR(MAX)
+AS
+BEGIN
+    SELECT 
+        p.ProductID,
+        p.ProductName,
+        p.Price,
+        p.StockQuantity
+    FROM Products p
+    JOIN STRING_SPLIT(@ProductList, ',') s
+        ON p.ProductID = CAST(s.value AS INT);
+END;
+
+
+-- 9 Write a stored procedure to calculate the following statistics for each product: 
+CREATE PROCEDURE sp_ProductStatistics
+AS
+BEGIN
+    SELECT
+        p.ProductID,
+        p.ProductName,
+        SUM(c.Quantity) AS TotalSold,
+        SUM(c.Quantity * p.Price) AS TotalRevenue,
+        AVG(c.Quantity * 1.0) AS AvgOrderQty,
+        STDEV(c.Quantity * 1.0) AS StdDevOrderQty
+    FROM Products p
+    JOIN Cart c ON p.ProductID = c.ProductID
+    GROUP BY p.ProductID, p.ProductName;
+END;
+
+
+--10 Write a stored procedure to find customers who have not placed any orders in the last 6 months.
+
+
+CREATE PROCEDURE sp_InactiveCustomers
+AS
+BEGIN
+    SELECT 
+        c.CustomerID,
+        c.Name AS CustomerName,
+        MAX(o.OrderDate) AS LastOrderDate
+    FROM Customers c
+    LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+    GROUP BY c.CustomerID, c.Name
+    HAVING MAX(o.OrderDate) < DATEADD(MONTH, -6, GETDATE())
+           OR MAX(o.OrderDate) IS NULL;
+END;
+
+
+--11 Write a store procedure Implement a CASE statement within a query to categorize customers based on their total purchase amount into 'Gold', 'Silver', or 'Bronze' tiers
+
+
+CREATE PROCEDURE sp_CustomerCategory
+AS
+BEGIN
+    SELECT 
+        c.CustomerID,
+        c.Name AS CustomerName,
+        COUNT(o.OrderID) AS NumberOfOrders,
+        SUM(o.TotalAmount) AS OrderAmount,
+        CASE 
+            WHEN COUNT(o.OrderID) >= 3 
+                 AND SUM(o.TotalAmount) > 1000 THEN 'Gold'
+            WHEN COUNT(o.OrderID) = 2 
+                 AND SUM(o.TotalAmount) > 500 THEN 'Silver'
+            ELSE 'Bronze'
+        END AS Category
+    FROM Customers c
+    LEFT JOIN Orders o ON c.CustomerID = o.CustomerID
+    GROUP BY c.CustomerID, c.Name;
+END;
+
+
+
