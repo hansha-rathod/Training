@@ -1,0 +1,17 @@
+.main-content {
+    background-color: white;
+    padding: 2rem;
+    flex: 1;
+}
+
+.main-content h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.main-content p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.8;
+}
