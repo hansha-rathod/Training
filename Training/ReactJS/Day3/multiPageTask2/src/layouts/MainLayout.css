@@ -1,0 +1,6 @@
+/* MainLayout Styles */
+main {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
