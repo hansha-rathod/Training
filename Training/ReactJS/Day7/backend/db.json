@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin",
+      "email": "admin@mail.com",
+      "password": "$2a$10$CTtIlxaQzmK1nrHOlkEvQu010sPIydDZM5uAUBsZNhdzXprm7Tl7e",
+      "roleId": 1,
+      "permissionIds": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "id": "2",
+      "name": "hr",
+      "email": "hr@mail.com",
+      "password": "$2a$10$CTtIlxaQzmK1nrHOlkEvQu010sPIydDZM5uAUBsZNhdzXprm7Tl7e",
+      "roleId": 2,
+      "permissionIds": [
+        2,
+        3,
+        4
+      ]
+    }
+   
+   
+  ],
+  "roles": [
+    {
+      "id": "1",
+      "name": "admin"
+    },
+    {
+      "id": "2",
+      "name": "hr"
+    },
+    {
+      "id": "3",
+      "name": "supervisor"
+    },
+    {
+      "id": "4",
+      "name": "manager"
+    }
+  ],
+  "permissions": [
+    {
+      "id": "1",
+      "module": "users",
+      "action": "view"
+    },
+    {
+      "id": "2",
+      "module": "users",
+      "action": "add"
+    },
+    {
+      "id": "3",
+      "module": "users",
+      "action": "edit"
+    },
+    {
+      "id": "4",
+      "module": "users",
+      "action": "delete"
+    },
+    {
+      "id": "5",
+      "module": "employees",
+      "action": "view"
+    },
+    {
+      "id": "6",
+      "module": "employees",
+      "action": "add"
+    },
+    {
+      "id": "7",
+      "module": "employees",
+      "action": "edit"
+    },
+    {
+      "id": "8",
+      "module": "employees",
+      "action": "delete"
+    }
+  ],
+  "employees": [
+    {
+      "id": "1",
+      "name": "Rahul",
+      "email": "rahul@mail.com",
+      "designation": "Developer",
+      "projectIds": [
+        1
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "name": "CRM System",
+      "employeeIds": [
+        1
+      ]
+    }
+  ]
+}
