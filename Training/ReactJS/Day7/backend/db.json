@@ -2,109 +2,177 @@
   "users": [
     {
       "id": "1",
-      "name": "Admin",
+      "name": "Admin User",
       "email": "admin@mail.com",
-      "password": "$2a$10$CTtIlxaQzmK1nrHOlkEvQu010sPIydDZM5uAUBsZNhdzXprm7Tl7e",
-      "roleId": 1,
-      "permissionIds": [
-        1,
-        2,
-        3,
-        4
-      ]
+      "password": "$2a$10$C7bJ6CrAfcKGntUkR1jPtOBLY6yyllqP4ymE/L0aFifGgvvhXy2mC",
+      "roleId": 1
     },
     {
       "id": "2",
-      "name": "hr",
+      "name": "HR Manager",
       "email": "hr@mail.com",
-      "password": "$2a$10$CTtIlxaQzmK1nrHOlkEvQu010sPIydDZM5uAUBsZNhdzXprm7Tl7e",
-      "roleId": 2,
-      "permissionIds": [
-        2,
-        3,
-        4
-      ]
+      "password": "$2a$10$C7bJ6CrAfcKGntUkR1jPtOBLY6yyllqP4ymE/L0aFifGgvvhXy2mC",
+      "roleId": 2
+    },
+    {
+      "id": "3",
+      "name": "Supervisor",
+      "email": "supervisor@mail.com",
+      "password": "$2a$10$C7bJ6CrAfcKGntUkR1jPtOBLY6yyllqP4ymE/L0aFifGgvvhXy2mC",
+      "roleId": 3
     }
-   
-   
   ],
   "roles": [
     {
-      "id": "1",
-      "name": "admin"
+      "id": 1,
+      "name": "Admin",
+      "permissions": {
+        "users": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "employees": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "projects": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "roles": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ]
+      }
     },
     {
-      "id": "2",
-      "name": "hr"
+      "name": "HR",
+      "permissions": {
+        "users": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "employees": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "roles": [
+          "view",
+          "add",
+          "edit",
+          "delete"
+        ],
+        "projects": [
+          "edit",
+          "add",
+          "view",
+          "delete"
+        ]
+      },
+      "id": 2
     },
     {
-      "id": "3",
-      "name": "supervisor"
+      "name": "Supervisor",
+      "permissions": {
+        "users": [
+          "view",
+          "edit"
+        ],
+        "employees": [
+          "view",
+          "edit"
+        ],
+        "projects": [
+          "view",
+          "edit"
+        ],
+        "roles": [
+          "view",
+          "edit"
+        ]
+      },
+      "id": 3
     },
     {
-      "id": "4",
-      "name": "manager"
-    }
-  ],
-  "permissions": [
-    {
-      "id": "1",
-      "module": "users",
-      "action": "view"
-    },
-    {
-      "id": "2",
-      "module": "users",
-      "action": "add"
-    },
-    {
-      "id": "3",
-      "module": "users",
-      "action": "edit"
-    },
-    {
-      "id": "4",
-      "module": "users",
-      "action": "delete"
-    },
-    {
-      "id": "5",
-      "module": "employees",
-      "action": "view"
-    },
-    {
-      "id": "6",
-      "module": "employees",
-      "action": "add"
-    },
-    {
-      "id": "7",
-      "module": "employees",
-      "action": "edit"
-    },
-    {
-      "id": "8",
-      "module": "employees",
-      "action": "delete"
+      "name": "Manager",
+      "permissions": {
+        "users": [
+          "view",
+          "edit"
+        ],
+        "employees": [
+          "view",
+          "edit"
+        ],
+        "projects": [
+          "view",
+          "edit"
+        ],
+        "roles": [
+          "view",
+          "edit"
+        ]
+      },
+      "id": 4
     }
   ],
   "employees": [
     {
-      "id": "1",
-      "name": "Rahul",
+      "id": 1,
+      "name": "Rahul Sharma",
       "email": "rahul@mail.com",
-      "designation": "Developer",
+      "designation": "Senior Developer",
       "projectIds": [
         1
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Priya Patel",
+      "email": "priya@mail.com",
+      "designation": "UI/UX Designer",
+      "projectIds": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Amit Kumar",
+      "email": "amit@mail.com",
+      "designation": "Backend Developer",
+      "projectIds": [
+        2
       ]
     }
   ],
   "projects": [
     {
-      "id": "1",
+      "id": 1,
       "name": "CRM System",
       "employeeIds": [
-        1
+        1,
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "name": "E-Commerce Platform",
+      "employeeIds": [
+        2,
+        3
       ]
     }
   ]
