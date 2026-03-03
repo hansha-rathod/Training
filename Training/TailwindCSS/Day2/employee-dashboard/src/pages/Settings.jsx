@@ -67,7 +67,7 @@ const Settings = () => {
           onChange={(e) =>
             setForm({ ...form, name: e.target.value })
           }
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full dark:bg-gray-700 dark:text-white"
         />
 
         <input
@@ -77,7 +77,7 @@ const Settings = () => {
           onChange={(e) =>
             setForm({ ...form, email: e.target.value })
           }
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full dark:bg-gray-700 dark:text-white"
         />
 
         <button
@@ -99,7 +99,7 @@ const Settings = () => {
           placeholder="New Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border p-2 rounded w-full"
+          className="border p-2 rounded w-full dark:bg-gray-700 dark:text-white"
         />
 
         <button

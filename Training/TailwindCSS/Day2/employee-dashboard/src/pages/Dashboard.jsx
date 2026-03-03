@@ -18,7 +18,7 @@ const Dashboard = () => {
   }, [])
 
   /* -------------------------
-     🔹 Derived Metrics
+     Derived Metrics
   --------------------------*/
 
   const totalEmployees = employees.length
@@ -42,7 +42,7 @@ const Dashboard = () => {
   }, [employees])
 
   /* -------------------------
-     🔹 Loading State
+     Loading State
   --------------------------*/
 
   if (loading) {

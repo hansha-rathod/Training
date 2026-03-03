@@ -5,7 +5,13 @@ const defaultFormState = {
   id: "",
   firstName: "",
   lastName: "",
+  email: "",
+  phone: "",
   department: "IT",
+  jobTitle: "",
+  employmentType: "Full-time",
+  reportingManager: "",
+  workLocation: "",
   status: "Active"
 }
 
@@ -61,55 +67,157 @@ const EmployeeModal = ({ isOpen, onClose, employee }) => {
           {employee ? "Edit Employee" : "Add Employee"}
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-8">
 
-          {/* First Name */}
-          <input
-            name="firstName"
-            placeholder="First Name"
-            className="border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white"
-            value={form.firstName}
-            onChange={handleChange}
-          />
+  {/* ================= CORE IDENTITY ================= */}
+  <div>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+      Core Identity
+    </h3>
 
-          {/* Last Name */}
-          <input
-            name="lastName"
-            placeholder="Last Name"
-            className="border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white"
-            value={form.lastName}
-            onChange={handleChange}
-          />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-          {/* Department */}
+      <div>
+        <label className="label-style">First Name</label>
+        <input
+          name="firstName"
+          className="input-style"
+          value={form.firstName}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <label className="label-style">Last Name</label>
+        <input
+          name="lastName"
+          className="input-style"
+          value={form.lastName}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <label className="label-style">Email Address</label>
+        <input
+          type="email"
+          name="email"
+          className="input-style"
+          value={form.email}
+          onChange={handleChange}
+        />
+      </div>
+
+      <div>
+        <label className="label-style">Phone Number</label>
+        <input
+          name="phone"
+          className="input-style"
+          value={form.phone}
+          onChange={handleChange}
+        />
+      </div>
+
+    </div>
+  </div>
+
+
+  {/* ================= EMPLOYMENT DETAILS ================= */}
+  <div>
+    <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">
+      Employment Details
+    </h3>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <div>
+        <label className="label-style">Department</label>
+        <select
+          name="department"
+          className="input-style"
+          value={form.department}
+          onChange={handleChange}
+        >
+          <option>IT</option>
+          <option>Design</option>
+          <option>Finance</option>
+          <option>Management</option>
+        </select>
+      </div>
+
+      <div>
+        <label className="label-style">Job Title</label>
+        <select
+          name="jobTitle"
+          className="input-style"
+          value={form.jobTitle}
+          onChange={handleChange}
+        >
+          <option>Full-stack Developer</option>
+          <option>UI/UX Designer</option>
+          <option>Project Manager</option>
+          <option>Accountant</option>
           
-          <select
-            name="department"
-            className="border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white"
-            value={form.department}
-            onChange={handleChange}
-          >
-            <option value="IT">IT</option>
-            <option value="Design">Design</option>
-            <option value="Finance">Finance</option>
-            <option value="Management">Management</option>
-          </select>
+        </select>
+      </div>
 
+      <div>
+        <label className="label-style">Employment Type</label>
+        <select
+          name="employmentType"
+          className="input-style"
+          value={form.employmentType}
+          onChange={handleChange}
+        >
+          <option>Full-time</option>
+          <option>Contract</option>
+          <option>Intern</option>
+        </select>
+      </div>
 
-          {/* Status Dropdown */}
-          <select
-            name="status"
-            className="border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-700 dark:text-white"
-            value={form.status}
-            onChange={handleChange}
-          >
-            <option value="Active">Active</option>
-            <option value="On Leave">On Leave</option>
-            <option value="Probation">Probation</option>
-            <option value="Terminated">Terminated</option>
-          </select>
+      <div>
+        <label className="label-style">Reporting Manager</label>
+        <input
+          name="reportingManager"
+          className="input-style"
+          value={form.reportingManager}
+          onChange={handleChange}
+        />
+      </div>
 
-        </div>
+      <div>
+        <label className="label-style">Work Location</label>
+        <select
+          name="workLocation"
+          className="input-style"
+          value={form.workLocation}
+          onChange={handleChange}
+        >
+          <option>On-site</option>
+          <option>Remote</option>
+        </select>
+        
+      </div>
+
+      <div>
+        <label className="label-style">Employment Status</label>
+        <select
+          name="status"
+          className="input-style"
+          value={form.status}
+          onChange={handleChange}
+        >
+          <option>Active</option>
+          <option>On Leave</option>
+          <option>Probation</option>
+          <option>Terminated</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
         <div className="mt-6 flex justify-end space-x-3">
           <button

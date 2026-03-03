@@ -3,17 +3,17 @@ const Navbar = ({
   setNotificationOpen
 }) => {
   return (
-    <header className="sticky top-0 z-20 bg-white dark:bg-gray-800 shadow-sm px-4 py-3 flex justify-between items-center">
+    <header className="top-0 z-20 bg-white dark:bg-gray-800 shadow-sm px-4 py-3 flex justify-between items-center">
       
       {/* Hamburger */}
       <button
         onClick={toggleSidebar}
-        className="lg:hidden text-xl"
+        className="hidden md:block lg:hidden text-xl"
       >
         ☰
       </button>
 
-      <h1 className="font-semibold">Dashboard</h1>
+      <h1 className="font-bold dark:text-white">Employee's Dashboard</h1>
 
       {/* Notification */}
       <button

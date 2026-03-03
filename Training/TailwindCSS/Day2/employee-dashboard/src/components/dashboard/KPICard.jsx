@@ -11,7 +11,7 @@ const KPICard = ({ title, value }) => {
       transition-all duration-300
       hover:-translate-y-1
     ">
-      <p className="text-sm text-gray-500 dark:text-gray-400">
+      <p className="text-sm text-gray-500 dark:text-gray-200">
         {title}
       </p>
 

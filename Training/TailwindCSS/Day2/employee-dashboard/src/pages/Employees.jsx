@@ -1,14 +1,24 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useEmployees } from "../context/EmployeeContext"
 import EmployeeTable from "../components/employees/EmployeeTable"
 import EmployeeCard from "../components/employees/EmployeeCard"
 import EmployeeModal from "../components/employees/EmployeeModal"
+import Skeleton from "../components/ui/Skeleton"
 
 const Employees = () => {
   const { employees } = useEmployees()
+  const [loading, setLoading] = useState(true)
 
   const [isOpen, setIsOpen] = useState(false)
   const [editingEmployee, setEditingEmployee] = useState(null)
+
+  useEffect(() => {
+      const timer = setTimeout(() => {
+        setLoading(false)
+      }, 1500)
+  
+      return () => clearTimeout(timer)
+    }, [])
 
   /* ---------------------------
      Modal Handlers
@@ -28,6 +38,19 @@ const Employees = () => {
     setIsOpen(false)
     setEditingEmployee(null)
   }
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-12 w-full rounded-xl2" />
+        <Skeleton className="h-12 w-full rounded-xl2" />
+        <Skeleton className="h-12 w-full rounded-xl2" />
+        <Skeleton className="h-12 w-full rounded-xl2" />
+        <Skeleton className="h-12 w-full rounded-xl2" />
+      </div>
+    )
+  }
+  
 
   return (
     <div className="space-y-6">

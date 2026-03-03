@@ -3,6 +3,26 @@
 @tailwind utilities;
 
 /* Smooth transitions globally */
+html, body, #root {
+  height: 100%;
+}
+
 * {
   @apply transition-colors duration-300;
+}
+
+.input-style {
+  @apply w-full border border-gray-300 dark:border-gray-600
+  rounded-lg px-3 py-2
+  bg-white dark:bg-gray-700
+  text-gray-800 dark:text-white
+  focus:outline-none
+  focus:ring-2 focus:ring-primary
+  focus:border-transparent
+  transition;
+}
+
+.label-style {
+  @apply block text-sm font-medium mb-1
+  text-gray-700 dark:text-gray-300;
 }
