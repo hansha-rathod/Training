@@ -1,0 +1,327 @@
+/* ==========================================
+   Department Color Badges
+   Matching C# enum values
+   ========================================== */
+
+/* Sales - Red (#ff0000) - As per task document */
+span.badge.badge-sales,
+.badge-sales {
+    background-color: #ff0000 !important;
+    color: #ffffff !important;
+}
+
+/* Marketing - Dark Green (#005400) - As per task document */
+span.badge.badge-marketing,
+.badge-marketing {
+    background-color: #005400 !important;
+    color: #ffffff !important;
+}
+
+/* Development - Black (#000000) - As per task document */
+span.badge.badge-development,
+.badge-development {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* QA - Deep Blue (#0000ff) - As per task document */
+span.badge.badge-qa,
+.badge-qa {
+    background-color: #0000ff !important;
+    color: #ffffff !important;
+}
+
+/* HR - Orange/Coral (#ff7f50) - As per task document */
+span.badge.badge-hr,
+.badge-hr {
+    background-color: #ff7f50 !important;
+    color: #ffffff !important;
+}
+
+/* SEO - Bright Pink/Magenta (#fe00ef) - As per task document */
+span.badge.badge-seo,
+.badge-seo {
+    background-color: #fe00ef !important;
+    color: #ffffff !important;
+}
+
+/* ==========================================
+   Sort Indicator Styles
+   ========================================== */
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.sortable:hover {
+    background-color: #4a5a6a;
+}
+
+.sort-icon {
+    margin-left: 5px;
+    opacity: 0.5;
+    font-size: 0.8em;
+}
+
+.sortable.asc .sort-icon::before {
+    content: '\f0de'; /* fa-sort-up */
+    opacity: 1;
+}
+
+.sortable.desc .sort-icon::before {
+    content: '\f0dd'; /* fa-sort-down */
+    opacity: 1;
+}
+
+/* ==========================================
+   Table Styles
+   ========================================== */
+
+.table thead th {
+    border-top: none;
+    vertical-align: middle;
+}
+
+.table tbody tr {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Gender Badge */
+.badge-gender {
+    font-weight: bold;
+    text-transform: uppercase;
+    min-width: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+/* ==========================================
+   Action Button Styles
+   ========================================== */
+
+.btn-view {
+    padding: 5px 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    transform: scale(1.1);
+}
+
+/* ==========================================
+   Modal Styles
+   ========================================== */
+
+.modal-header {
+    border-radius: calc(0.3rem - 1px) calc(0.3rem - 1px) 0 0;
+}
+
+.modal-lg {
+    max-width: 900px;
+}
+
+.modal-body table th {
+    font-weight: 600;
+}
+
+/* ==========================================
+   Loading Spinner
+   ========================================== */
+
+#loadingSpinner {
+    padding: 60px 0;
+}
+
+#loadingSpinner .spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* ==========================================
+   Search Input
+   ========================================== */
+
+#searchInput {
+    border-radius: 0 20px 20px 0;
+}
+
+.input-group-text {
+    border-radius: 20px 0 0 20px;
+    background-color: #fff;
+}
+
+/* ==========================================
+   Pagination Styles
+   ========================================== */
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.page-link {
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    margin: 0 2px;
+    border-radius: 5px;
+}
+
+.page-link:hover {
+    background-color: #e9ecef;
+    color: #007bff;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+    color: #6c757d;
+    pointer-events: none;
+    background-color: #fff;
+    border-color: #dee2e6;
+}
+
+/* ==========================================
+   Records Info
+   ========================================== */
+
+#recordsInfo {
+    font-size: 0.9em;
+}
+
+/* ==========================================
+   No Records Message
+   ========================================== */
+
+#noRecordsMessage {
+    padding: 40px 20px;
+}
+
+#noRecordsMessage i {
+    opacity: 0.5;
+}
+
+/* ==========================================
+   Alert Styles
+   ========================================== */
+
+#errorAlert {
+    border-radius: 5px;
+}
+
+/* ==========================================
+   Responsive Design
+   ========================================== */
+
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.9em;
+    }
+
+    .btn-view {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+
+    .modal-lg {
+        max-width: 100%;
+        margin: 10px;
+    }
+
+    #searchInput {
+        font-size: 0.9em;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center !important;
+    }
+
+    .col-md-6 .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    #pageSizeSelect {
+        margin: 5px 0;
+    }
+}
+
+/* ==========================================
+   Utility Classes
+   ========================================== */
+
+.text-ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* ==========================================
+   Card Enhancements
+   ========================================== */
+
+.card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* ==========================================
+   Navbar Styles
+   ========================================== */
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+/* ==========================================
+   Badge Department Enhancement
+   ========================================== */
+
+.badge {
+    padding: 6px 12px;
+    font-size: 0.85em;
+    font-weight: 500;
+    border-radius: 20px;
+    text-transform: capitalize;
+    letter-spacing: 0.3px;
+}
+
+/* ==========================================
+   Smooth Transitions
+   ========================================== */
+
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Disable transition for specific elements */
+#loadingSpinner *,
+.table thead th {
+    transition: none;
+}

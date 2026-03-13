@@ -1,0 +1,19 @@
+[
+  {
+    "employeeId": "123490",
+    "name": "regina",
+    "dob": "2003-09-12T00:00:00",
+    "gender": "F",
+    "designation": "designer",
+    "city": "surat",
+    "state": "guj",
+    "postcode": "123456",
+    "phone": "1234567809",
+    "email": "regina@gmail.com",
+    "dateOfJoining": "2023-05-02T00:00:00",
+    "totalExperience": "2 Years 10 Months",
+    "remarks": "not good",
+    "department": 2,
+    "monthlySalary": 30000.0
+  }
+]
